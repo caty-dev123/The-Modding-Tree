@@ -13,14 +13,14 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0",
-	name: "Literally nothing",
+	num: "0.3",
+	name: "The School 2.0",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.0</h3><br>
-		- Added things.<br>
-		- Added stuff.`
+	<h3>v0.1</h3><br>
+		- New Upgrade<br>
+		- MORE!!`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -43,9 +43,13 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(1)
+	
+
 	if (hasUpgrade('b', 11)) gain = gain.times(2)
 	if (hasUpgrade('b', 12)) gain = gain.times(3)
 	if (hasUpgrade('b', 13)) gain = gain.times(2)
+	if (hasUpgrade('b', 14)) gain = gain.times(8)
+	if (hasUpgrade('b', 15)) gain = gain.times(8)
 	return gain
 }
 
