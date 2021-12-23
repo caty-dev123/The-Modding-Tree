@@ -13,14 +13,14 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.3",
-	name: "The School 2.0",
+	num: "0.51",
+	name: "Speed?",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.1</h3><br>
-		- New Upgrade<br>
-		- MORE!!`
+	<h3>v0.51</h3><br>
+		- Added a few upgrades <br>
+		- Added End game`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -44,12 +44,16 @@ function getPointGen() {
 
 	let gain = new Decimal(1)
 	
+	if(inChallenge("s",12)){gain=gain.div(2)}
+	if(hasChallenge("s",11)) gain=gain.pow(3)
 
 	if (hasUpgrade('b', 11)) gain = gain.times(2)
 	if (hasUpgrade('b', 12)) gain = gain.times(3)
 	if (hasUpgrade('b', 13)) gain = gain.times(2)
 	if (hasUpgrade('b', 14)) gain = gain.times(8)
 	if (hasUpgrade('b', 15)) gain = gain.times(8)
+	if (hasUpgrade('b', 17)) gain = gain.times(10)
+
 	return gain
 }
 
@@ -63,7 +67,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal("e280000000"))
+	return player.l.points.gte(new Decimal("1e10"))
 }
 
 
