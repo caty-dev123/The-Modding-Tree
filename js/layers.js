@@ -508,7 +508,25 @@ addLayer("r", {
         return hasUpgrade('m', 15) || player.r.unlocked
 }, 
 
+upgrades: {
 
+    11: {
+        title: "Research Compressed Air",
+        description: "It is time for the researching",
+        cost: new Decimal(1),
+       
+    },
 
+},
+
+achievements: {
+    11: {
+        
+        name: "A compressed way",
+        description: "Unlock compressed air"
+        
+    },
+    
+}
 
 })
