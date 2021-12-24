@@ -127,7 +127,10 @@ addLayer("b", {
     
     passiveGeneration(){
         {return hasUpgrade("b",17)}
-    }
+    },
+
+    
+
 
 })
 
@@ -485,7 +488,7 @@ addLayer("r", {
     }},
     color: "#B1B1B1",
     requires: new Decimal(300), // Can be a function that takes requirement increases into account
-    resource: "Management", // Name of prestige currency
+    resource: "Researches", // Name of prestige currency
     baseResource: "Learnings", // Name of resource prestige is based on
     baseAmount() {return player.l.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
@@ -508,25 +511,67 @@ addLayer("r", {
         return hasUpgrade('m', 15) || player.r.unlocked
 }, 
 
-upgrades: {
+branches: [ "l"], 
 
-    11: {
-        title: "Research Compressed Air",
-        description: "It is time for the researching",
-        cost: new Decimal(1),
-       
+}),
+
+addLayer("th", {
+    branches: [ "b"],
+    name: "Thoughts", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "T", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+		points: new Decimal(0),
+    }},
+    color: "#C6EBC6",
+    requires: new Decimal(10), // Can be a function that takes requirement increases into account
+    resource: "Thoughts", // Name of prestige currency
+    baseResource: "Basics", // Name of resource prestige is based on
+    baseAmount() {return player.b.points}, // Get the current amount of baseResource
+    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 1, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        
+
+
+        return mult
     },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 0, // Row the layer is in on the tree (0 is the first row)
+    hotkeys: [
+        {key: "h", description: "h: Reset for Thoughts", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+    layerShown(){return true},
 
-},
-
+    layerShown() {
+        return hasUpgrade('b', 11) || player.th.unlocked
+}, 
+    
 achievements: {
     11: {
-        
-        name: "A compressed way",
-        description: "Unlock compressed air"
-        
+        name: "Get 1 Th",
+        description: "Your mind is thinking",
+        done(){
+            return player.th.gte(1)
+        }
+
+    },
+
+    12: {
+        name: "Get 3 Th",
+        description: "",
+        done(){
+            return player.th.gte(1)
+        }
+
     },
     
-}
+},
+
+base: 10
 
 })
