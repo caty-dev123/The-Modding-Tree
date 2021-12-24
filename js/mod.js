@@ -13,14 +13,14 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.51",
-	name: "Speed?",
+	num: "0.6",
+	name: "Manager",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.51</h3><br>
-		- Added a few upgrades <br>
-		- Added End game`
+	<h3>v0.52</h3><br>
+		- Added a new layer <br>
+		- So many more things`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -44,8 +44,9 @@ function getPointGen() {
 
 	let gain = new Decimal(1)
 	
-	if(inChallenge("s",12)){gain=gain.div(2)}
+	if(inChallenge("s",12)){gain=gain.div(3.5)}
 	if(hasChallenge("s",11)) gain=gain.pow(3)
+	
 
 	if (hasUpgrade('b', 11)) gain = gain.times(2)
 	if (hasUpgrade('b', 12)) gain = gain.times(3)
@@ -53,6 +54,8 @@ function getPointGen() {
 	if (hasUpgrade('b', 14)) gain = gain.times(8)
 	if (hasUpgrade('b', 15)) gain = gain.times(8)
 	if (hasUpgrade('b', 17)) gain = gain.times(10)
+	if (hasUpgrade('b', 18)) gain = gain.times(15)
+	if (hasUpgrade('m', 11)) gain = gain.times(20)
 
 	return gain
 }
@@ -67,7 +70,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.l.points.gte(new Decimal("1e10"))
+	return player.m.points.gte(new Decimal("1e10"))
 }
 
 

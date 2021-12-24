@@ -19,6 +19,7 @@ addLayer("b", {
         if (hasUpgrade('s', 11)) mult = mult.times(2)
         if (hasUpgrade('s', 12)) mult = mult.times(3)
         if (hasMilestone('l', 0)) mult = mult.times(10)
+        if (hasChallenge('s', 12)) mult = mult.times(8)
 
        
 
@@ -102,9 +103,20 @@ addLayer("b", {
         17: {
             title: "Ancient Ways",
             description: "These are the ancient ways.",
-            cost: new Decimal(1e4),
+            cost: new Decimal(3e3),
             unlocked() {
                 return hasUpgrade("s", 14)
+
+            }
+                 
+        },
+
+        18: {
+            title: "GAS GAS GAS",
+            description: "GAS GAS GAS IM GONNA STEP ON THE GAS",
+            cost: new Decimal(1e4),
+            unlocked() {
+                return hasUpgrade("b", 17)
 
             }
                  
@@ -141,6 +153,8 @@ addLayer("s", {
         mult = new Decimal(1)
         if (hasUpgrade('b', 16)) mult = mult.times(2)
         if (hasUpgrade('l', 11)) mult = mult.times(3)
+        if (hasUpgrade('m', 11)) mult = mult.times(10)
+        if (hasChallenge('s', 13)) mult = mult.times(8)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -212,6 +226,28 @@ addLayer("s", {
             
         },
 
+        16: {
+            title: "Science Classes",
+            description: "You are now allowed to do science horray!",
+            cost: new Decimal(9e4),
+            unlocked() {
+                return hasUpgrade("s", 15)
+            }
+            
+            
+        },
+
+        17: {
+            title: "School Management",
+            description: "You are the manager of the school now",
+            cost: new Decimal(2e5),
+            unlocked() {
+                return hasUpgrade("s", 16)
+            }
+            
+            
+        },
+
 
 
         
@@ -225,10 +261,37 @@ addLayer("s", {
             goal(){
                 return "100 Basics"
             },
-            rewardDescription(){return "More Points"}
-            
+            rewardDescription(){return "More Points"},
+           
         },
         
+        12: {
+            name: "Algreba",
+            challengeDescription: "Just get 100 basics",
+            canComplete: function() {return player.b.points.gte(100)},
+            goal(){
+                return "100 Basics"
+            },
+            rewardDescription(){return "More Points"},
+            unlocked() {
+                return hasUpgrade("l", 12)
+              }
+            
+        },
+
+        13: {
+            name: "Calculus",
+            challengeDescription: "Get 1e3 Basics",
+            canComplete: function() {return player.b.points.gte(1e3)},
+            goal(){
+                return "1e3 Basics"
+            },
+            rewardDescription(){return "Gain more S"},
+            unlocked() {
+                return hasUpgrade("l", 13)
+              }
+            
+        },
     },
 
     resetsNothing(){return hasUpgrade("s",13)}
@@ -253,7 +316,10 @@ addLayer("l", {
     exponent: 0.25, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
-       
+
+        if (hasMilestone('l', 1)) mult = mult.times(2)
+        if (hasUpgrade('m', 13)) mult = mult.times(10)
+
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -279,6 +345,20 @@ upgrades: {
         
     },
 
+    12: {
+        title: "Books",
+        description: "Unlock a New Challenge",
+        cost: new Decimal(20),
+        
+    },
+
+    13: {
+        title: "Preperation",
+        description: "Unlock a New Challenge",
+        cost: new Decimal(90),
+        
+    },
+
 
 },
 
@@ -290,8 +370,97 @@ milestones: {
         effect() {
           
         }
+    },
+
+    1: {
+        requirementDescription: "500 Learnigns",
+        effectDescription: "Effect: You gain more L",
+        done() { return player.l.points.gte(500) },
+        effect() {
+          
+        }
     }
    
 }
 
+})
+
+
+addLayer("m", {
+    
+    name: "Management", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "M", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: false,
+		points: new Decimal(0),
+    }},
+    color: "#65FFE1",
+    requires: new Decimal(200), // Can be a function that takes requirement increases into account
+    resource: "Management", // Name of prestige currency
+    baseResource: "Schools", // Name of resource prestige is based on
+    baseAmount() {return player.s.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.10, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 2, // Row the layer is in on the tree (0 is the first row)
+    hotkeys: [
+        {key: "m", description: "m: Reset for Management", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+    layerShown(){return true},
+    
+    layerShown() {
+        return hasUpgrade('s', 17) || player.m.unlocked
+},
+branches: [ "s","l"], 
+
+
+upgrades: {
+
+    11: {
+        title: "Students",
+        description: "Your students are becoming better by the day (boosts point gain)",
+        cost: new Decimal(1),
+    },
+
+    12: {
+        title: "School Renovating",
+        description: "Well the school has to look better right?",
+        cost: new Decimal(3),
+    },
+
+    13: {
+        title: "More Learning",
+        description: "The more you learn the more you gain?",
+        cost: new Decimal(7),
+    },
+
+    14: {
+        title: "Back To The Start",
+        description: "Well Again?",
+        cost: new Decimal(7),
+        unlocked (){
+            {return hasUpgrade("m",13)}
+        }
+    },
+
+},
+milestones: {
+    0: {
+        requirementDescription: "5e4 M",
+        effectDescription: "You gain 100% of managment",
+        done() { return player.m.points.gte(50000) }
+    }
+    
+},
+passiveGeneration(){
+    {return hasMilestone("m",0)}
+}
 })
