@@ -13,12 +13,12 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.2",
-	name: "Crafter",
+	num: "0.4",
+	name: "The end",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.2</h3><br>
+	<h3>v0.4</h3><br>
 		I DONT DO THIS THING`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
@@ -57,7 +57,39 @@ function getPointGen() {
 	if (hasChallenge('i', 13)) gain = gain.times(50)
 	if (hasUpgrade('c', 11)) gain = gain.times(15)
 	if (hasUpgrade('c', 12)) gain = gain.times(40)
-		
+	if (hasUpgrade('c', 13)) gain = gain.times(50)
+	if (hasUpgrade('c', 14)) gain = gain.times(150)
+	if (hasUpgrade('r', 11)) gain = gain.times(2)
+	if (hasUpgrade('s', 41)) gain = gain.times(100)
+	if (hasUpgrade('c', 21)) gain = gain.times(150)
+	if (hasUpgrade('c', 22)) gain = gain.times(225)
+	if (hasUpgrade('s', 42)) gain = gain.times(750)
+	if (hasUpgrade('c', 24)) gain = gain.times(4e3)
+	if (hasUpgrade('s', 14)) gain = gain.times(1e4)
+	if (hasMilestone('e', 1)) gain = gain.times(750)
+	if (hasMilestone('e', 2)) gain = gain.times(1e4)
+	if (hasUpgrade('r', 14)) gain = gain.times(1e5)
+	if (hasUpgrade('c', 31)) gain = gain.times(1e5)
+	if (hasUpgrade('s', 34)) gain = gain.times(2e5)
+	if (hasChallenge('i', 14)) gain = gain.times(5e4)
+	if (hasUpgrade('r', 15)) gain = gain.times(3e5)
+	if (hasUpgrade('c', 32)) gain = gain.times(1e7)
+	if (hasUpgrade('c', 33)) gain = gain.times(1e9)
+	if (hasMilestone('o', 1)) gain = gain.times(1e9)
+	if (hasUpgrade('o', 11)) gain = gain.times(1e12)
+	if (hasUpgrade('c', 34)) gain = gain.times(1e15)
+	if (hasUpgrade('o', 12)) gain = gain.times(1e25)
+	if (hasUpgrade('mp', 11)) gain = gain.times(1e15)
+	if (hasUpgrade('mp', 21)) gain = gain.times(1e20)
+	if (hasUpgrade('mp', 12)) gain = gain.times(1e20)
+	if (hasUpgrade('mp', 31)) gain = gain.times(1e20)
+	if (hasMilestone('o', 3)) gain = gain.times(1e45)
+	if (hasUpgrade('mp', 14)) gain = gain.times(1e50)
+	if (hasUpgrade('mp', 23)) gain = gain.times(1e70)
+	if (hasUpgrade('mp', 41)) gain = gain.times(1e65)
+	if (hasUpgrade('mp', 23)) gain = gain.times(1e63)
+	if (hasUpgrade('o', 21)) gain = gain.times(1e63)
+
 
 	return gain
 }
