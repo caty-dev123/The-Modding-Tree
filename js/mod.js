@@ -13,14 +13,13 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0",
-	name: "Literally nothing",
+	num: "0.2",
+	name: "Crafter",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.0</h3><br>
-		- Added things.<br>
-		- Added stuff.`
+	<h3>v0.2</h3><br>
+		I DONT DO THIS THING`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -48,6 +47,16 @@ function getPointGen() {
 	if (hasUpgrade('s', 12)) gain = gain.times(2)
 	if (hasUpgrade('s', 13)) gain = gain.times(3)
 	if (hasUpgrade('s', 21)) gain = gain.times(5)
+	if (hasUpgrade('s', 22)) gain = gain.times(6)
+	if (hasUpgrade('s', 23)) gain = gain.times(10)
+	if (hasMilestone('i', 0)) gain = gain.times(20)
+	if (hasUpgrade('s', 31)) gain = gain.times(10)
+	if (hasUpgrade('s', 33)) gain = gain.times(30)
+	if (hasChallenge('i', 11)) gain = gain.times(35)
+	if (hasChallenge('i', 12)) gain = gain.times(35)
+	if (hasChallenge('i', 13)) gain = gain.times(50)
+	if (hasUpgrade('c', 11)) gain = gain.times(15)
+	if (hasUpgrade('c', 12)) gain = gain.times(40)
 		
 
 	return gain
