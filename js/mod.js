@@ -1,6 +1,6 @@
 let modInfo = {
 	name: "The Stranded Tree",
-	id: "Caty",
+	id: "Caty-stranded-tree",
 	author: "nobody",
 	pointsName: "skills",
 	modFiles: ["layers.js", "tree.js"],
