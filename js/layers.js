@@ -1062,7 +1062,7 @@ addLayer("g", {
         unlocked: true,
 		points: new Decimal(0),
     }},
-    color: "#0059A7",
+    color: "#5900FF",
     requires: new Decimal(1e231), // Can be a function that takes requirement increases into account
     resource: "Goals", // Name of prestige currency
     baseResource: "Food", // Name of resource prestige is based on
