@@ -1,6 +1,6 @@
 let modInfo = {
-	name: "The ??? Tree",
-	id: "mymod",
+	name: "The Long Tree",
+	id: "The-Long-Tree",
 	author: "nobody",
 	pointsName: "points",
 	modFiles: ["layers.js", "tree.js"],
@@ -43,6 +43,33 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(1)
+	if (hasUpgrade('sp', 11)) gain = gain.times(1.5)
+	if (hasUpgrade('sp', 12)) gain = gain.times(2)
+	if (hasUpgrade('sp', 21)) gain = gain.times(2)
+	if (hasUpgrade('sp', 22)) gain = gain.times(2)
+	if (hasUpgrade('p', 11)) gain = gain.times(4.5)
+	if (hasUpgrade('p', 12)) gain = gain.times(8)
+	if (hasUpgrade('sp', 13)) gain = gain.times(10)
+	if (hasUpgrade('sp', 23)) gain = gain.times(5)
+	if (hasUpgrade('p', 21)) gain = gain.times(12)
+	if (hasUpgrade('bp', 11)) gain = gain.times(10)
+	if (hasUpgrade('bp', 12)) gain = gain.times(10)
+	if (hasUpgrade('p', 13)) gain = gain.times(15)
+	if (hasUpgrade('p', 23)) gain = gain.times(25)
+	if (hasUpgrade('sp', 31)) gain = gain.times(30)
+	if (hasChallenge('bp', 11)) gain = gain.times(40)
+	if (hasUpgrade('sp', 32)) gain = gain.times(50)
+	if (hasUpgrade('sp', 33)) gain = gain.times(100)
+	if (hasChallenge('bp', 12)) gain = gain.times(250)
+	if (hasUpgrade('gp', 11)) gain = gain.times(100)
+	if (hasUpgrade('p', 31)) gain = gain.times(500)
+	if (hasUpgrade('gp', 13)) gain = gain.times(2e3)
+	if (hasChallenge('bp', 13)) gain = gain.times(1e4)
+	if (hasUpgrade('p', 32)) gain = gain.times(2e4)
+	if (hasUpgrade('p', 33)) gain = gain.times(3e5)
+	if (hasUpgrade('gp', 14)) gain = gain.times(1e6)
+	if (hasMilestone('mp', 1)) gain = gain.times(1e5)
+	if (hasUpgrade('gp', 15)) gain = gain.times(1e7)
 	return gain
 }
 
