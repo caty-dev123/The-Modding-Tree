@@ -1,6 +1,6 @@
 let modInfo = {
-	name: "The ??? Tree",
-	id: "mymod",
+	name: "Compact Claustrophobia",
+	id: "CC-Caty",
 	author: "nobody",
 	pointsName: "points",
 	modFiles: ["layers.js", "tree.js"],
@@ -43,7 +43,33 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(1)
+	if (hasUpgrade('cr', 11)) gain = gain.times(2)
+	if (hasUpgrade('cr', 11)) gain = gain.times(2)
+	if (hasUpgrade('cmp', 11)) gain = gain.times(2)
+	if (hasUpgrade('cr', 21)) gain = gain.times(2)
+	if (hasUpgrade('cmp', 12)) gain = gain.times(3)
+	if (hasUpgrade('cr', 22)) gain = gain.times(6)
+	if (hasUpgrade('cmp', 13)) gain = gain.times(8)
+	if (hasUpgrade('cr', 13)) gain = gain.times(8)
+	if (hasUpgrade('cr', 23)) gain = gain.times(8)
+	if (hasUpgrade('cr', 31)) gain = gain.times(8)
+	if (hasMilestone('mt', 0)) gain = gain.times(10)
+	if (hasUpgrade('cmp', 21)) gain = gain.times(11)
+	if (hasUpgrade('cr', 32)) gain = gain.times(11)
+	if (hasUpgrade('cr', 33)) gain = gain.times(15)
+	if (hasUpgrade('cmp', 22)) gain = gain.times(25)
+	if (hasUpgrade('mt', 11)) gain = gain.times(50)
+	if (hasUpgrade('mt', 12)) gain = gain.times(125)
+	if (hasUpgrade('q', 11)) gain = gain.times(150)
+	if (hasUpgrade('q', 12)) gain = gain.times(250)
+	if (hasUpgrade('q', 13)) gain = gain.times(250)
+	if (hasUpgrade('q', 14)) gain = gain.times(250)
+	if (hasUpgrade('lp', 12)) gain = gain.times(1e3)
+	if (hasUpgrade('cmp', 14)) gain = gain.times(1e3)
+	if (hasUpgrade('cmp', 24)) gain = gain.times(5e3)
+	if (hasUpgrade('q', 15)) gain = gain.times(2e4)
 	return gain
+
 }
 
 // You can add non-layer related variables that should to into "player" and be saved here, along with default values
