@@ -1,5 +1,5 @@
 let modInfo = {
-	name: "The ??? Tree",
+	name: "The Element Tree",
 	id: "mymod",
 	author: "nobody",
 	pointsName: "points",
@@ -43,6 +43,29 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(1)
+	if (hasUpgrade('h', 11)) gain = gain.times(2)
+	if (hasUpgrade('h', 12)) gain = gain.times(2)
+	if (hasUpgrade('h', 13)) gain = gain.times(10)
+	if (hasUpgrade('h', 14)) gain = gain.times(12.5)
+	if (hasUpgrade('h', 21)) gain = gain.times(15)
+	if (hasUpgrade('h', 22)) gain = gain.times(20)
+	if (hasUpgrade('h', 23)) gain = gain.times(50)
+	if (hasUpgrade('h', 24)) gain = gain.times(125)
+	if (hasUpgrade('h', 25)) gain = gain.times(125)
+	if (hasUpgrade('h', 31)) gain = gain.times(250)
+	if (hasUpgrade('h', 32)) gain = gain.times(250)
+	if (hasUpgrade('h', 33)) gain = gain.times(750)
+	if (hasUpgrade('h', 34)) gain = gain.times(1.5e3)
+	if (hasUpgrade('h', 35)) gain = gain.times(1e4)
+	if (hasUpgrade('slr', 11)) gain = gain.times(1e5)
+	if (hasUpgrade('slr', 12)) gain = gain.times(1e5)
+	if (hasUpgrade('h', 41)) gain = gain.times(1e6)
+	if (hasUpgrade('c', 11)) gain = gain.times(1e6)
+	if (hasUpgrade('slr', 13)) gain = gain.times(1e7)
+	if (hasUpgrade('h', 42)) gain = gain.times(1e8)
+	if (hasUpgrade('c', 12)) gain = gain.times(1e9)
+	if (hasUpgrade('h', 43)) gain = gain.times(1e10)
+	if (hasUpgrade('c', 13)) gain = gain.times(1e12)
 	return gain
 }
 
