@@ -1,5 +1,5 @@
 let modInfo = {
-	name: "The ??? Tree",
+	name: "The Nature Tree",
 	id: "mymod",
 	author: "nobody",
 	pointsName: "points",
@@ -13,14 +13,13 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0",
-	name: "Literally nothing",
+	num: "0.1",
+	name: "A I R",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.0</h3><br>
-		- Added things.<br>
-		- Added stuff.`
+	<h3>v0.1</h3><br>
+		- Started mod<br>`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -43,6 +42,18 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(1)
+	if (hasUpgrade('o', 11)) gain = gain.times(2)
+	if (hasUpgrade('o', 12)) gain = gain.times(3)
+	if (hasUpgrade('o', 13)) gain = gain.times(upgradeEffect('o', 13))
+	if (hasUpgrade('o', 14)) gain = gain.times(upgradeEffect('o', 14))
+	if (hasUpgrade('o', 15)) gain = gain.times(100)
+	if (hasUpgrade('o', 21)) gain = gain.times(4)
+	if (hasUpgrade('o', 22)) gain = gain.times(8)
+	if (hasUpgrade('o', 23)) gain = gain.times(16)
+	if (hasUpgrade('o', 24)) gain = gain.times(24)
+	if (hasUpgrade('e', 11)) gain = gain.times(upgradeEffect('e', 11))
+	if (hasUpgrade('e', 12)) gain = gain.times(upgradeEffect('e', 12))
+	if (hasUpgrade('e', 13)) gain = gain.times(1e3)
 	return gain
 }
 
@@ -56,7 +67,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal("e280000000"))
+	return player.e.points.gte(new Decimal("999"))
 }
 
 
