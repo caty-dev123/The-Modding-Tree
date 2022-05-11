@@ -17,6 +17,7 @@ addLayer("o", {
         mult = new Decimal(1)
         if (hasUpgrade('c', 13)) mult = mult.times(upgradeEffect('c', 13))
         if (hasUpgrade('c', 14)) mult = mult.times(1e3)
+        if (hasUpgrade('c', 25)) mult = mult.times(1e4)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -122,16 +123,63 @@ addLayer("o", {
             unlocked(){return hasUpgrade("o",34)}
         },
         51: {
-            title: "Oxygen I - I",
-            description: "unlock nitrogen [W.I.P]",
-            cost: new Decimal("1e999"),
+            title: "Nitrogen Power",
+            description: "unlock nitrogen",
+            cost: new Decimal(1e94),
             unlocked(){return hasUpgrade("o",34)},
-            branches: ["o",34,31,32,33]
+            branches: ["o",34]
+        },
+        61: {
+            title: "Oxygen I - I [W.I.P]",
+            description: "Unlock Medals",
+            cost: new Decimal("1e999"),
+            unlocked(){return hasUpgrade("o",51)},
+            branches: ["o",34]
         },
     },
     passiveGeneration(){return hasUpgrade("e",14)},
     autoUpgrade(){return hasMilestone("c",0)}
 }),
+
+addLayer("n", {
+    name: "nitrogen", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "N", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+		points: new Decimal(0),
+    }},
+    color: "#29ABCA",
+    requires: new Decimal(1e94), // Can be a function that takes requirement increases into account
+    resource: "nitrogen", // Name of prestige currency
+    baseResource: "oxygen", // Name of resource prestige is based on
+    baseAmount() {return player.o.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.05, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 1, // Row the layer is in on the tree (0 is the first row)
+    layerShown(){return hasUpgrade("o",51)},
+    branches: ["o", "c"],
+
+    tabFormat: {
+        "Upgrades": {
+            content: [
+                "main-display",
+                "prestige-button",
+                "blank",
+                "upgrades"
+            ],
+            
+        },
+    },
+
+})
 addLayer("c", {
     name: "carbon", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "C", // This appears on the layer's node. Default is the id with the first letter capitalized
@@ -149,6 +197,11 @@ addLayer("c", {
     exponent: 0.2, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+        if (hasUpgrade('c', 15)) mult = mult.times(25)
+        if (hasUpgrade('c', 21)) mult = mult.times(100)
+        if (hasUpgrade('c', 22)) mult = mult.times(200)
+        if (hasUpgrade('c', 23)) mult = mult.times(400)
+        if (hasUpgrade('c', 24)) mult = mult.times(800)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -188,6 +241,36 @@ addLayer("c", {
             title: "Carbon IV",
             description: "x1e3 oxygen",
             cost: new Decimal(2e8),
+        },
+        15: {
+            title: "Carbon V",
+            description: "x25 Carbon",
+            cost: new Decimal(2e15),
+        },
+        21: {
+            title: "Carbon VI",
+            description: "x100 Carbon",
+            cost: new Decimal(2e16),
+        },
+        22: {
+            title: "Carbon VII",
+            description: "x200 Carbon",
+            cost: new Decimal(1e18),
+        },
+        23: {
+            title: "Carbon VIII",
+            description: "x400 Carbon",
+            cost: new Decimal(4e20),
+        },
+        24: {
+            title: "Carbon IX",
+            description: "x800 Carbon",
+            cost: new Decimal(1.5e23),
+        },
+        25: {
+            title: "Carbon X",
+            description: "x1e3 Oxygen",
+            cost: new Decimal(1e26),
         },
     },
     tabFormat: {
@@ -542,6 +625,84 @@ addLayer("ac", {
             name: "40",
             tooltip: "Get 1e14 Carbon",
             done(){return player.c.points.gte(1e14)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        81: {
+            name: "41",
+            tooltip: "Get 1e15 Carbon",
+            done(){return player.c.points.gte(1e15)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        82: {
+            name: "42",
+            tooltip: "Get 1e16 Carbon",
+            done(){return player.c.points.gte(1e16)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        83: {
+            name: "43",
+            tooltip: "Get 1e17 Carbon",
+            done(){return player.c.points.gte(1e17)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        84: {
+            name: "44",
+            tooltip: "Get 1e18 Carbon",
+            done(){return player.c.points.gte(1e18)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        85: {
+            name: "45",
+            tooltip: "Get 1e19 Carbon",
+            done(){return player.c.points.gte(1e19)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        86: {
+            name: "46",
+            tooltip: "Get 1e20 Carbon",
+            done(){return player.c.points.gte(1e20)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        91: {
+            name: "47",
+            tooltip: "Get 1e22 Carbon",
+            done(){return player.c.points.gte(1e22)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        92: {
+            name: "48",
+            tooltip: "Get 1e24 Carbon",
+            done(){return player.c.points.gte(1e24)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        93: {
+            name: "49",
+            tooltip: "Get 1e26 Carbon",
+            done(){return player.c.points.gte(1e26)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        94: {
+            name: "50",
+            tooltip: "Get 1e28 Carbon",
+            done(){return player.c.points.gte(1e28)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        95: {
+            name: "51",
+            tooltip: "Get 1e30 Carbon",
+            done(){return player.c.points.gte(1e30)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        96: {
+            name: "52",
+            tooltip: "Get 1e32 Carbon",
+            done(){return player.c.points.gte(1e32)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        101: {
+            name: "53",
+            tooltip: "Get 1 Nitrogen",
+            done(){return player.n.points.gte(1)},
             unlocked(){return player.c.points.gte(1)}
         },
         

@@ -13,11 +13,21 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.3",
-	name: "More oxygen",
+	num: "0.4",
+	name: "The 3rd Layer",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+<h3>v0.4</h3><br>
+- Added more oxygen upgrades <br>
+- Added more carbon upgrades <br>
+- Started working on nitrogen <br>
+- Balanced up to 1e139 points
+
+<br>
+<br>
+<br>
+
 	<h3>v0.3</h3><br>
 	- Added more oxygen upgrades <br>
 	- Added more carbon upgrades
