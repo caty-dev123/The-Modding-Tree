@@ -18,6 +18,7 @@ addLayer("o", {
         if (hasUpgrade('c', 13)) mult = mult.times(upgradeEffect('c', 13))
         if (hasUpgrade('c', 14)) mult = mult.times(1e3)
         if (hasUpgrade('c', 25)) mult = mult.times(1e4)
+        if (hasUpgrade('n', 13)) mult = mult.times(upgradeEffect('n', 13))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -58,7 +59,7 @@ addLayer("o", {
         15: {
             title: "Oxygen V",
             description: "x100 point gain",
-            cost: new Decimal(500),
+            cost: new Decimal(300),
            
         },
         21: {
@@ -147,7 +148,7 @@ addLayer("n", {
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: true,
-		points: new Decimal(0),
+		points: new Decimal(10),
     }},
     color: "#29ABCA",
     requires: new Decimal(1e94), // Can be a function that takes requirement increases into account
@@ -177,7 +178,72 @@ addLayer("n", {
             ],
             
         },
+        "Challenges": {
+            content: [
+                "main-display",
+                "blank",
+                "challenges"
+            ],
+            unlocked(){return hasUpgrade("n",11)}
+            
+        },
     },
+upgrades: {
+    11: {
+        title: "Nitrogen I",
+        description: "Unlock Nitrogen Challenges",
+        cost: new Decimal(5),
+    },
+    12: {
+        title: "Nitrogen II",
+        description: "Nitrogen boosts points",
+        cost: new Decimal(15),
+        unlocked(){return hasChallenge("n",11)},
+        effect() {
+            return player[this.layer].points.add(1).pow(0.52)
+        },
+        effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        unlocked(){return hasChallenge("n",11)}
+    },
+    13: {
+        title: "Nitrogen III",
+        description: "Nitrogen boosts oxygen",
+        cost: new Decimal(10),
+        effect() {
+            return player.n.points.add(1).pow(0.5)
+        },
+        effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        unlocked(){return hasChallenge("n",11)}
+    },
+    14: {
+        title: "Nitrogen IV",
+        description: "Nitrogen boosts carbon",
+        cost: new Decimal(20),
+        effect() {
+            return player.n.points.add(1).pow(0.6)
+        },
+        effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        unlocked(){return hasChallenge("n",11)}
+    },
+    15: {
+        title: "Nitrogen V",
+        description: "Unlock more carbon upgrades",
+        cost: new Decimal(30),
+        unlocked(){return hasChallenge("n",11)}
+    },
+},
+
+challenges: {
+    11: {
+        name: "Nitrogen Struggle",
+        challengeDescription: "",
+        goalDescription: "Get 1e98 oxygen",
+        rewardDescription: "Unlock more nitrogen upgrades",
+        marked(){return hasChallenge("n", 11)},
+        canComplete: function() {return player.o.points.gte(1e98)},
+    },
+    
+}
 
 })
 addLayer("c", {
@@ -202,6 +268,7 @@ addLayer("c", {
         if (hasUpgrade('c', 22)) mult = mult.times(200)
         if (hasUpgrade('c', 23)) mult = mult.times(400)
         if (hasUpgrade('c', 24)) mult = mult.times(800)
+        if (hasUpgrade('n', 14)) mult = mult.times(upgradeEffect('n', 14))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -271,6 +338,24 @@ addLayer("c", {
             title: "Carbon X",
             description: "x1e3 Oxygen",
             cost: new Decimal(1e26),
+        },
+        31: {
+            title: "Carbon XI",
+            description: "x1e5 Oxygen",
+            cost: new Decimal(8e32),
+            unlocked(){return hasUpgrade("n",15)}
+        },
+        32: {
+            title: "Carbon XII",
+            description: "Unlock more element upgrades",
+            cost: new Decimal(5e33),
+            unlocked(){return hasUpgrade("n",15)}
+        },
+        33: {
+            title: "Carbon XIII",
+            description: "x1e3 oxygen",
+            cost: new Decimal(3e34),
+            unlocked(){return hasUpgrade("n",15)}
         },
     },
     tabFormat: {
@@ -368,7 +453,34 @@ addLayer("e", {
             cost: new Decimal(15),
             unlocked(){return hasMilestone("c",1)}
         },
-    }
+        16: {
+            title: "Fluorine",
+            description: "Boost point gain based on nitrogen",
+            cost: new Decimal(20),
+            unlocked(){return hasUpgrade("c",32)},
+            effect() {
+                return player.n.points.add(1).pow(0.41)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
+        21: {
+            title: "Neon",
+            description: "Boost point gain based on carbon",
+            cost: new Decimal(21),
+            unlocked(){return hasUpgrade("c",32)},
+            effect() {
+                return player.c.points.add(1).pow(0.1)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
+        22: {
+            title: "Sodium",
+            description: "Automatically gain elements",
+            cost: new Decimal(22),
+            unlocked(){return hasUpgrade("c",32)},
+        },
+    },
+    autoPrestige(){return hasUpgrade("e",22)}
     
 
 })
@@ -440,7 +552,7 @@ addLayer("ac", {
             done(){return player.o.points.gte(10)}
         },
         23: {
-            name: "8",
+            name: "8(2)",
             tooltip: "Get 100 Oxygen",
             done(){return player.o.points.gte(100)}
         },
@@ -700,9 +812,40 @@ addLayer("ac", {
             unlocked(){return player.c.points.gte(1)}
         },
         101: {
-            name: "53",
+            name: "52(2)",
             tooltip: "Get 1 Nitrogen",
             done(){return player.n.points.gte(1)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        102: {
+            name: "53",
+            tooltip: "Get 10 Nitrogen",
+            done(){return player.n.points.gte(10)},
+            unlocked(){return player.c.points.gte(1)},
+            
+        },
+        103: {
+            name: "54",
+            tooltip: "Get 1e3 Nitrogen",
+            done(){return player.n.points.gte(1e3)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        104: {
+            name: "55",
+            tooltip: "Get 1e4 Nitrogen",
+            done(){return player.n.points.gte(1e4)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        105: {
+            name: "56",
+            tooltip: "Get 1e6 Nitrogen",
+            done(){return player.n.points.gte(1e6)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        106: {
+            name: "57",
+            tooltip: "Get 1e8 Nitrogen",
+            done(){return player.n.points.gte(1e8)},
             unlocked(){return player.c.points.gte(1)}
         },
         
@@ -710,7 +853,8 @@ addLayer("ac", {
     tabFormat: {
         "achievements": {
             content: [
-                "achievements"
+                "main-display",
+                "achievements",
             ],
             
         },

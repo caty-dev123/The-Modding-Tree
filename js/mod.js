@@ -13,11 +13,21 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.4",
-	name: "The 3rd Layer",
+	num: "0.5",
+	name: "Elemental",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+<h3>v0.5</h3><br>
+- Added more carbon upgrades <br>
+- Added more nitrogen upgrades <br>
+- Balanced up to 23 elements <br>
+- Added more element upgrades
+
+<br>
+<br>
+<br>
+
 <h3>v0.4</h3><br>
 - Added more oxygen upgrades <br>
 - Added more carbon upgrades <br>
@@ -84,6 +94,11 @@ function getPointGen() {
 	if (hasUpgrade('o', 33)) gain = gain.times(100)
 	if (hasUpgrade('c', 11)) gain = gain.times(upgradeEffect('c', 11))
 	if (hasUpgrade('c', 12)) gain = gain.times(upgradeEffect('c', 12))
+	if (hasUpgrade('n', 12)) gain = gain.times(upgradeEffect('n', 12))
+	if (hasUpgrade('c', 31)) gain = gain.times(1e5)
+	if (hasUpgrade('e', 16)) gain = gain.times(upgradeEffect('e', 16))
+	if (hasUpgrade('e', 21)) gain = gain.times(upgradeEffect('e', 21))
+	if (hasUpgrade('c', 33)) gain = gain.times(1e3)
 	return gain
 }
 
