@@ -94,8 +94,81 @@ addLayer("o", {
             cost: new Decimal(1e11),
             unlocked(){return hasUpgrade("e",13)}
         },
+        32: {
+            title: "Oxygen XII",
+            description: "x100 points again.",
+            cost: new Decimal(4e11),
+            unlocked(){return hasUpgrade("e",13)}
+        },
+        33: {
+            title: "Oxygen XIII",
+            description: "x100 points the 3rd time",
+            cost: new Decimal(3e15),
+            unlocked(){return hasUpgrade("e",13)}
+        },
+        34: {
+            title: "Oxygen XIV",
+            description: "unlock the carbon layer",
+            cost: new Decimal(1e17),
+            unlocked(){return hasUpgrade("e",13)},
+            branches: ["o",41]
+        },
+        41: {
+            title: "Carbon Layers [W.I.P]",
+            description: "unlock carbon milestones",
+            cost: new Decimal(1e32),
+            unlocked(){return hasUpgrade("o",34)}
+        },
     },
+    passiveGeneration(){return hasUpgrade("e",14)}
 }),
+addLayer("c", {
+    name: "carbon", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "C", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+		points: new Decimal(0),
+    }},
+    color: "#2B2B2B",
+    requires: new Decimal(1e17), // Can be a function that takes requirement increases into account
+    resource: "carbon", // Name of prestige currency
+    baseResource: "points", // Name of resource prestige is based on
+    baseAmount() {return player.o.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.2, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 1, // Row the layer is in on the tree (0 is the first row)
+    layerShown(){return hasUpgrade("o",34)},
+    branches: ["o"],
+    upgrades:{
+        11: {
+            title: "Carbon I",
+            description: "Boost point gain based on oxygen even more",
+            cost: new Decimal(2),
+            effect() {
+                return player.o.points.add(1).pow(0.3)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
+    },
+    tabFormat: {
+        "Upgrades": {
+            content: [
+                "main-display",
+                "prestige-button",
+                "upgrades"
+            ],
+            
+        },
+    }
+})
 
 addLayer("e", {
     name: "elements", // This is optional, only used in a few places, If absent it just uses the layer id.
@@ -145,6 +218,12 @@ addLayer("e", {
             title: "Lithium",
             description: "x1e3 point gain and unlock new oxygen upgrades",
             cost: new Decimal(4),
+        },
+        14: {
+            title: "Beryllium",
+            description: "Gain 100% oxygen",
+            cost: new Decimal(7),
+            unlocked(){return player.c.points.gte(1)}
         },
     }
     
@@ -295,6 +374,42 @@ addLayer("ac", {
             name: "22",
             tooltip: "Get 6 Elements",
             done(){return player.e.points.gte(6)}
+        },
+        51: {
+            name: "23",
+            tooltip: "Get 1 Carbon",
+            done(){return player.c.points.gte(1)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        52: {
+            name: "24",
+            tooltip: "Get 2 Carbon",
+            done(){return player.c.points.gte(2)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        53: {
+            name: "25",
+            tooltip: "Get 4 Carbon",
+            done(){return player.c.points.gte(4)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        54: {
+            name: "26",
+            tooltip: "Get 8 Carbon",
+            done(){return player.c.points.gte(8)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        55: {
+            name: "27",
+            tooltip: "Get 16 Carbon",
+            done(){return player.c.points.gte(16)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        56: {
+            name: "28",
+            tooltip: "Get 64 Carbon",
+            done(){return player.c.points.gte(64)},
+            unlocked(){return player.c.points.gte(1)}
         },
         
     },
