@@ -13,13 +13,20 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.2",
-	name: "C is for carbon",
+	num: "0.3",
+	name: "More oxygen",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>v0.2</h3><br>
-	- Added more hydrogen upgrades <br>
+	- Added more oxygen upgrades <br>
+	- Added more carbon upgrades
+
+	<br>
+	<br>
+	<br>
+	<h3>v0.2</h3><br>
+	- Added more oxygen upgrades <br>
 	- Started working on the carbon layer.
 
 	<br>
@@ -66,6 +73,7 @@ function getPointGen() {
 	if (hasUpgrade('o', 32)) gain = gain.times(100)
 	if (hasUpgrade('o', 33)) gain = gain.times(100)
 	if (hasUpgrade('c', 11)) gain = gain.times(upgradeEffect('c', 11))
+	if (hasUpgrade('c', 12)) gain = gain.times(upgradeEffect('c', 12))
 	return gain
 }
 

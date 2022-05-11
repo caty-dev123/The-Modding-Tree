@@ -15,6 +15,8 @@ addLayer("o", {
     exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+        if (hasUpgrade('c', 13)) mult = mult.times(upgradeEffect('c', 13))
+        if (hasUpgrade('c', 14)) mult = mult.times(1e3)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -37,7 +39,7 @@ addLayer("o", {
         13: {
             title: "Oxygen III",
             description: "Boost point gain by oxygen",
-            cost: new Decimal(125),
+            cost: new Decimal(75),
             effect() {
                 return player[this.layer].points.add(1).pow(0.25)
             },
@@ -114,13 +116,21 @@ addLayer("o", {
             branches: ["o",41]
         },
         41: {
-            title: "Carbon Layers [W.I.P]",
+            title: "Carbon Layers",
             description: "unlock carbon milestones",
-            cost: new Decimal(1e32),
+            cost: new Decimal(1e55),
             unlocked(){return hasUpgrade("o",34)}
         },
+        51: {
+            title: "Oxygen I - I",
+            description: "unlock nitrogen [W.I.P]",
+            cost: new Decimal("1e999"),
+            unlocked(){return hasUpgrade("o",34)},
+            branches: ["o",34,31,32,33]
+        },
     },
-    passiveGeneration(){return hasUpgrade("e",14)}
+    passiveGeneration(){return hasUpgrade("e",14)},
+    autoUpgrade(){return hasMilestone("c",0)}
 }),
 addLayer("c", {
     name: "carbon", // This is optional, only used in a few places, If absent it just uses the layer id.
@@ -157,6 +167,28 @@ addLayer("c", {
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
         },
+        12: {
+            title: "Carbon II",
+            description: "Boost point gain based on carbon",
+            cost: new Decimal(100),
+            effect() {
+                return player.c.points.add(1).pow(0.3)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
+        13: {
+            title: "Carbon III",
+            description: "Oxygen is boosted",
+            cost: new Decimal(1e3),
+            effect() {
+                return player.points.add(1).pow(0.15)
+            },
+        },
+        14: {
+            title: "Carbon IV",
+            description: "x1e3 oxygen",
+            cost: new Decimal(2e8),
+        },
     },
     tabFormat: {
         "Upgrades": {
@@ -167,7 +199,29 @@ addLayer("c", {
             ],
             
         },
-    }
+        "Milestones": {
+            content: [
+                "main-display",
+                "blank",
+                "milestones"
+            ],
+            unlocked(){return hasUpgrade("o",41)}
+        },
+    },
+    milestones: {
+        0: {
+            requirementDescription: "5e8 Carbon",
+            effectDescription: "Get oxygen upgrades Automatically",
+            done() { return player.c.points.gte(5e8) }
+        },
+        1: {
+            requirementDescription: "2e10 Carbon",
+            effectDescription: "Gain 100% carbon and unlock more element upgrades",
+            done() { return player.c.points.gte(2e10) }
+        }
+        
+    },
+    passiveGeneration(){return hasMilestone("c",1) || hasUpgrade("e",15)},
 })
 
 addLayer("e", {
@@ -225,6 +279,12 @@ addLayer("e", {
             cost: new Decimal(7),
             unlocked(){return player.c.points.gte(1)}
         },
+        15: {
+            title: "Boron",
+            description: "Gain 100% Carbon",
+            cost: new Decimal(15),
+            unlocked(){return hasMilestone("c",1)}
+        },
     }
     
 
@@ -258,7 +318,8 @@ addLayer("ac", {
         11: {
             name: "1",
             tooltip: "Get 1 point",
-            done(){return player.points.gte(1)}
+            done(){return player.points.gte(1)},
+            
         },
         12: {
             name: "2",
@@ -409,6 +470,78 @@ addLayer("ac", {
             name: "28",
             tooltip: "Get 64 Carbon",
             done(){return player.c.points.gte(64)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        61: {
+            name: "29",
+            tooltip: "Get 1e3 Carbon",
+            done(){return player.c.points.gte(1e3)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        62: {
+            name: "30",
+            tooltip: "Get 1e4 Carbon",
+            done(){return player.c.points.gte(1e4)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        63: {
+            name: "31",
+            tooltip: "Get 1e5 Carbon",
+            done(){return player.c.points.gte(1e5)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        64: {
+            name: "32",
+            tooltip: "Get 1e6 Carbon",
+            done(){return player.c.points.gte(1e6)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        65: {
+            name: "33",
+            tooltip: "Get 1e7 Carbon",
+            done(){return player.c.points.gte(1e7)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        66: {
+            name: "34",
+            tooltip: "Get 1e8 Carbon",
+            done(){return player.c.points.gte(1e8)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        71: {
+            name: "35",
+            tooltip: "Get 1e9 Carbon",
+            done(){return player.c.points.gte(1e9)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        72: {
+            name: "36",
+            tooltip: "Get 1e10 Carbon",
+            done(){return player.c.points.gte(1e10)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        73: {
+            name: "37",
+            tooltip: "Get 1e11 Carbon",
+            done(){return player.c.points.gte(1e11)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        74: {
+            name: "38",
+            tooltip: "Get 1e12 Carbon",
+            done(){return player.c.points.gte(1e12)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        75: {
+            name: "39",
+            tooltip: "Get 1e13 Carbon",
+            done(){return player.c.points.gte(1e13)},
+            unlocked(){return player.c.points.gte(1)}
+        },
+        76: {
+            name: "40",
+            tooltip: "Get 1e14 Carbon",
+            done(){return player.c.points.gte(1e14)},
             unlocked(){return player.c.points.gte(1)}
         },
         
