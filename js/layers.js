@@ -19,6 +19,8 @@ addLayer("o", {
         if (hasUpgrade('c', 14)) mult = mult.times(1e3)
         if (hasUpgrade('c', 25)) mult = mult.times(1e4)
         if (hasUpgrade('n', 13)) mult = mult.times(upgradeEffect('n', 13))
+        if (hasUpgrade('n', 23)) mult = mult.times(10)
+        if (hasUpgrade('t', 21)) mult = mult.times(upgradeEffect('t', 21))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -131,9 +133,16 @@ addLayer("o", {
             branches: ["o",34]
         },
         61: {
-            title: "Oxygen I - I [W.I.P]",
+            title: "Oxygen I - I",
             description: "Unlock Medals",
-            cost: new Decimal("1e999"),
+            cost: new Decimal(2e239),
+            unlocked(){return hasUpgrade("o",51)},
+            branches: ["o",34]
+        },
+        71: {
+            title: "Oxygen II - I",
+            description: "Unlock [w.i.p]",
+            cost: new Decimal("1e9999"),
             unlocked(){return hasUpgrade("o",51)},
             branches: ["o",34]
         },
@@ -148,7 +157,7 @@ addLayer("n", {
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: true,
-		points: new Decimal(10),
+		points: new Decimal(0),
     }},
     color: "#29ABCA",
     requires: new Decimal(1e94), // Can be a function that takes requirement increases into account
@@ -159,6 +168,9 @@ addLayer("n", {
     exponent: 0.05, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+        if (hasUpgrade('n', 21)) mult = mult.times(10)
+        if (hasUpgrade('n', 22)) mult = mult.times(2)
+        if (hasUpgrade('m', 14)) mult = mult.times(upgradeEffect('m', 14))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -231,6 +243,24 @@ upgrades: {
         cost: new Decimal(30),
         unlocked(){return hasChallenge("n",11)}
     },
+    21: {
+        title: "Nitrogen VI",
+        description: "x10 Nitrogen",
+        cost: new Decimal(5e5),
+        unlocked(){return hasUpgrade("c",35)}
+    },
+    22: {
+        title: "Nitrogen VII",
+        description: "x2 Nitrogen",
+        cost: new Decimal(3e7),
+        unlocked(){return hasUpgrade("c",35)}
+    },
+    23: {
+        title: "Nitrogen VIII",
+        description: "x10 Oxygen",
+        cost: new Decimal(5e7),
+        unlocked(){return hasUpgrade("c",35)}
+    },
 },
 
 challenges: {
@@ -243,8 +273,238 @@ challenges: {
         canComplete: function() {return player.o.points.gte(1e98)},
     },
     
-}
+},
+passiveGeneration(){return hasMilestone("m",0)},
+passiveGeneration(){return hasUpgrade("t",52)},
 
+}),
+addLayer("m", {
+    name: "medals", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "◆", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+		points: new Decimal(0),
+    }},
+    color: "#AA00FF",
+    requires: new Decimal(1e242), // Can be a function that takes requirement increases into account
+    resource: "medals", // Name of prestige currency
+    baseResource: "oxygen", // Name of resource prestige is based on
+    baseAmount() {return player.o.points}, // Get the current amount of baseResource
+    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.9, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        if (hasUpgrade('m', 11)) mult = mult.times(upgradeEffect('m', 11))
+        if (hasUpgrade('m', 21)) mult = mult.times(upgradeEffect('m', 21))
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: "side", // Row the layer is in on the tree (0 is the first row)
+    layerShown(){return hasUpgrade("o",61), ! hasUpgrade("t",51) },
+
+    tabFormat: {
+        "Awards": {
+            content: [
+                "main-display",
+                "prestige-button",
+                "blank",
+                "blank",
+                "blank",
+                "upgrades"
+            ],
+            
+        },
+        "Rewards": {
+            content: [
+                "main-display",
+                "blank",
+                "milestones"
+            ],
+            unlocked(){return hasUpgrade("m",21)}
+        },
+    },
+    upgrades: {
+        11: {
+            title: "Awards",
+            description: "Medals boosts points",
+            cost: new Decimal(1),
+            effect() {
+                return player.m.points.add(1).pow(0.5)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
+        12: {
+            title: "Awarding",
+            description: "Medals boosts oxygen",
+            cost: new Decimal(2),
+            effect() {
+                return player.m.points.add(1).pow(0.5)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
+        13: {
+            title: "Awarded",
+            description: "Medals boosts carbon",
+            cost: new Decimal(4),
+            effect() {
+                return player.m.points.add(1).pow(0.5)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
+        14: {
+            title: "Awarded Awards",
+            description: "Medals boosts nitrogen",
+            cost: new Decimal(8),
+            effect() {
+                return player.m.points.add(1).pow(0.5)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
+        15: {
+            title: "Awarded Awarding",
+            description: "Automatically get medals",
+            cost: new Decimal(32),
+        },
+        21: {
+            title: "Awarders",
+            description: "Unlock rewards",
+            cost: new Decimal(85),
+            unlocked(){return hasUpgrade("m",15)}
+        },
+        22: {
+            title: "Awarded Awarders",
+            description: "x1e3 point gain",
+            cost: new Decimal(21),
+            unlocked(){return hasUpgrade("m",15)}
+        },
+        23: {
+            title: "Awardless",
+            description: "Unlock the tokens",
+            cost: new Decimal(0),
+            unlocked(){return hasUpgrade("m",22)}
+        },
+    },
+    milestones: {
+        0: {
+            requirementDescription: "100 Medals",
+            effectDescription: "Gain 100% Nitrogen",
+            done() { return player.m.points.gte(100) }
+        },  
+    },
+    autoPrestige(){return hasUpgrade("m",15)}
+}),
+addLayer("t", {
+    name: "tokens", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "❖", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+		points: new Decimal(0),
+    }},
+    color: "#00FF81",
+    requires: new Decimal(1e250), // Can be a function that takes requirement increases into account
+    resource: "tokens", // Name of prestige currency
+    baseResource: "oxygen", // Name of resource prestige is based on
+    baseAmount() {return player.o.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.1, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: "side", // Row the layer is in on the tree (0 is the first row)
+    layerShown(){return hasUpgrade("m",23)},
+
+    upgrades: {
+        11: {
+            title: "The Start of the tree",
+            description: "Tokens boosts points",
+            cost: new Decimal(1.2e3),
+            effect() {
+                return player.t.points.add(1).pow(0.25)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
+        21: {
+            title: "Oxygen Upgrader",
+            description: "Tokens boosts oxygen",
+            cost: new Decimal(1.2e3),
+            unlocked(){return hasUpgrade("t",11)},
+            effect() {
+                return player.t.points.add(1).pow(0.25)
+            },
+        },
+        22: {
+            title: "Carbon Upgrader",
+            description: "Tokens boosts carbon",
+            cost: new Decimal(3e3),
+            unlocked(){return hasUpgrade("t",11)},
+            effect() {
+                return player.t.points.add(1).pow(0.25)
+            },
+        },
+        31: {
+            title: "Nitrogen Upgrader",
+            description: "Tokens boosts nitrogen",
+            cost: new Decimal(1e4),
+            unlocked(){return hasUpgrade("t",21)},
+            effect() {
+                return player.t.points.add(1).pow(0.25)
+            },
+        },
+        32: {
+            title: "Token Gainer",
+            description: "Gain 100% Tokens",
+            cost: new Decimal(1e4),
+            unlocked(){return hasUpgrade("t",22)},
+        },
+        41: {
+            title: "Point master I",
+            description: "Tokens boosts point gain",
+            cost: new Decimal(1e4),
+            unlocked(){return hasUpgrade("t",32,31)},
+            effect() {
+                return player.t.points.add(1).pow(0.25)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
+        51: {
+            title: "No more awards",
+            description: "Make the medals layer become hidden",
+            cost: new Decimal(4e4),
+            unlocked(){return hasUpgrade("t",41)},
+        },
+        52: {
+            title: "Nitrogen Gainer",
+            description: "Gain 100% nitrogen",
+            cost: new Decimal(3e4),
+            unlocked(){return hasUpgrade("t",41)},
+        },
+        53: {
+            title: "Point master II",
+            description: "Tokens boosts point gain",
+            cost: new Decimal(5e4),
+            unlocked(){return hasUpgrade("t",41)},
+            effect() {
+                return player.t.points.add(1).pow(0.27)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
+        61: {
+            title: "Elemental",
+            description: "Unlock even more element upgrades",
+            cost: new Decimal(1e6),
+            unlocked(){return hasUpgrade("t",51,52,53)},
+        },
+    },
+    resetsNothing(){return true},
+    passiveGeneration(){return hasUpgrade("t",32)},
 })
 addLayer("c", {
     name: "carbon", // This is optional, only used in a few places, If absent it just uses the layer id.
@@ -254,7 +514,7 @@ addLayer("c", {
         unlocked: true,
 		points: new Decimal(0),
     }},
-    color: "#2B2B2B",
+    color: "#808080",
     requires: new Decimal(1e17), // Can be a function that takes requirement increases into account
     resource: "carbon", // Name of prestige currency
     baseResource: "points", // Name of resource prestige is based on
@@ -269,6 +529,8 @@ addLayer("c", {
         if (hasUpgrade('c', 23)) mult = mult.times(400)
         if (hasUpgrade('c', 24)) mult = mult.times(800)
         if (hasUpgrade('n', 14)) mult = mult.times(upgradeEffect('n', 14))
+        if (hasUpgrade('m', 13)) mult = mult.times(upgradeEffect('m', 13))
+        if (hasUpgrade('t', 22)) mult = mult.times(upgradeEffect('t', 22))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -355,6 +617,18 @@ addLayer("c", {
             title: "Carbon XIII",
             description: "x1e3 oxygen",
             cost: new Decimal(3e34),
+            unlocked(){return hasUpgrade("n",15)}
+        },
+        34: {
+            title: "Carbon XIV",
+            description: "x1e4 oxygen",
+            cost: new Decimal(1e45),
+            unlocked(){return hasUpgrade("n",15)}
+        },
+        35: {
+            title: "Carbon XIV",
+            description: "x1e5 oxygen and unlock more nitrogen upgrades",
+            cost: new Decimal(2e45),
             unlocked(){return hasUpgrade("n",15)}
         },
     },
@@ -478,6 +752,22 @@ addLayer("e", {
             description: "Automatically gain elements",
             cost: new Decimal(22),
             unlocked(){return hasUpgrade("c",32)},
+        },
+        23: {
+            title: "Magnesium",
+            description: "x1e6 oxygen",
+            cost: new Decimal(27),
+            unlocked(){return hasUpgrade("c",32)},
+        },
+        24: {
+            title: "Aluminum",
+            description: "Boost point gain based on tokens",
+            cost: new Decimal(31),
+            unlocked(){return hasUpgrade("t",61)},
+            effect() {
+                return player.t.points.add(1).pow(0.2)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
         },
     },
     autoPrestige(){return hasUpgrade("e",22)}
@@ -847,6 +1137,78 @@ addLayer("ac", {
             tooltip: "Get 1e8 Nitrogen",
             done(){return player.n.points.gte(1e8)},
             unlocked(){return player.c.points.gte(1)}
+        },
+        111: {
+            name: "58",
+            tooltip: "Get 1 Medal",
+            done(){return player.m.points.gte(1)},
+            unlocked(){return player.m.points.gte(1)}
+        },
+        112: {
+            name: "59",
+            tooltip: "Get 10 Medals",
+            done(){return player.m.points.gte(10)},
+            unlocked(){return player.m.points.gte(1)}
+        },
+        113: {
+            name: "60",
+            tooltip: "Get 100 Medals",
+            done(){return player.m.points.gte(100)},
+            unlocked(){return player.m.points.gte(1)}
+        },
+        114: {
+            name: "61",
+            tooltip: "Get 1e3 Medals",
+            done(){return player.m.points.gte(1e3)},
+            unlocked(){return player.m.points.gte(1)}
+        },
+        115: {
+            name: "62",
+            tooltip: "Get 2e3 Medals",
+            done(){return player.m.points.gte(2e3)},
+            unlocked(){return player.m.points.gte(1)}
+        },
+        116: {
+            name: "63",
+            tooltip: "Get 3e3 Medals",
+            done(){return player.m.points.gte(3e3)},
+            unlocked(){return player.m.points.gte(1)}
+        },
+        121: {
+            name: "64",
+            tooltip: "Get 1 Token",
+            done(){return player.t.points.gte(1)},
+            unlocked(){return player.t.points.gte(1)}
+        },
+        122: {
+            name: "65",
+            tooltip: "Get 10 Token",
+            done(){return player.t.points.gte(10)},
+            unlocked(){return player.t.points.gte(1)}
+        },
+        123: {
+            name: "66",
+            tooltip: "Get 100 Token",
+            done(){return player.t.points.gte(100)},
+            unlocked(){return player.t.points.gte(1)}
+        },
+        124: {
+            name: "67",
+            tooltip: "Get 1e3 Token",
+            done(){return player.t.points.gte(1e3)},
+            unlocked(){return player.t.points.gte(1)}
+        },
+        125: {
+            name: "68",
+            tooltip: "Get 1e4 Token",
+            done(){return player.t.points.gte(1e4)},
+            unlocked(){return player.t.points.gte(1)}
+        },
+        126: {
+            name: "69",
+            tooltip: "Get 1e8 Token",
+            done(){return player.t.points.gte(1e8)},
+            unlocked(){return player.t.points.gte(1)}
         },
         
     },

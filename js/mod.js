@@ -1,6 +1,6 @@
 let modInfo = {
 	name: "The Nature Tree",
-	id: "mymod",
+	id: "nature",
 	author: "nobody",
 	pointsName: "points",
 	modFiles: ["layers.js", "tree.js"],
@@ -13,11 +13,32 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.5",
-	name: "Elemental",
+	num: "0.7",
+	name: "T is for tokens",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+<h3>v0.7</h3><br>
+- Added more token upgrades <br>
+- Added more element upgrades <br>
+- The game may not be balanced until medals <br>
+- Added things <br>
+- Fixed a few bugs
+
+<br>
+<br>
+<br>
+
+<h3>v0.6</h3><br>
+- Medal layer is finished <br>
+- Started working on medal and token layer <br>
+- Balanced up to 1e4 tokesn <br>
+- Added more token upgrades
+
+<br>
+<br>
+<br>
+
 <h3>v0.5</h3><br>
 - Added more carbon upgrades <br>
 - Added more nitrogen upgrades <br>
@@ -99,6 +120,14 @@ function getPointGen() {
 	if (hasUpgrade('e', 16)) gain = gain.times(upgradeEffect('e', 16))
 	if (hasUpgrade('e', 21)) gain = gain.times(upgradeEffect('e', 21))
 	if (hasUpgrade('c', 33)) gain = gain.times(1e3)
+	if (hasUpgrade('c', 34)) gain = gain.times(1e4)
+	if (hasUpgrade('c', 35)) gain = gain.times(1e5)
+	if (hasUpgrade('e', 23)) gain = gain.times(1e6)
+	if (hasUpgrade('m', 11)) gain = gain.times(upgradeEffect('m', 11))
+	if (hasUpgrade('t', 11)) gain = gain.times(upgradeEffect('t', 11))
+	if (hasUpgrade('t', 41)) gain = gain.times(upgradeEffect('t', 41))
+	if (hasUpgrade('t', 53)) gain = gain.times(upgradeEffect('t', 53))
+	if (hasUpgrade('e', 24)) gain = gain.times(upgradeEffect('e', 24))
 	return gain
 }
 
