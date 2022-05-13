@@ -13,11 +13,18 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.7",
-	name: "T is for tokens",
+	num: "0.8",
+	name: "Oxygen Balance",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+<h3>v0.8</h3><br>
+- Balanced up to the first nitrogen upgrade
+
+<br>
+<br>
+<br>
+
 <h3>v0.7</h3><br>
 - Added more token upgrades <br>
 - Added more element upgrades <br>
@@ -128,6 +135,8 @@ function getPointGen() {
 	if (hasUpgrade('t', 41)) gain = gain.times(upgradeEffect('t', 41))
 	if (hasUpgrade('t', 53)) gain = gain.times(upgradeEffect('t', 53))
 	if (hasUpgrade('e', 24)) gain = gain.times(upgradeEffect('e', 24))
+	if (hasUpgrade('p', 11)) gain = gain.times(upgradeEffect('p', 11))
+	if (hasUpgrade('t', 24)) gain = gain.times(upgradeEffect('t', 24))
 	return gain
 }
 

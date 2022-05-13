@@ -21,6 +21,8 @@ addLayer("o", {
         if (hasUpgrade('n', 13)) mult = mult.times(upgradeEffect('n', 13))
         if (hasUpgrade('n', 23)) mult = mult.times(10)
         if (hasUpgrade('t', 21)) mult = mult.times(upgradeEffect('t', 21))
+        if (hasUpgrade('p', 12)) mult = mult.times(upgradeEffect('p', 12))
+        if (hasUpgrade('p', 25)) mult = mult.times(upgradeEffect('p', 25))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -43,7 +45,7 @@ addLayer("o", {
         13: {
             title: "Oxygen III",
             description: "Boost point gain by oxygen",
-            cost: new Decimal(75),
+            cost: new Decimal(50),
             effect() {
                 return player[this.layer].points.add(1).pow(0.25)
             },
@@ -52,7 +54,7 @@ addLayer("o", {
         14: {
             title: "Oxygen IV",
             description: "Boost point gain by point gain",
-            cost: new Decimal(145),
+            cost: new Decimal(100),
             effect() {
                 return player.points.add(1).pow(0.205)
             },
@@ -61,13 +63,13 @@ addLayer("o", {
         15: {
             title: "Oxygen V",
             description: "x100 point gain",
-            cost: new Decimal(300),
+            cost: new Decimal(230),
            
         },
         21: {
             title: "Oxygen VI",
             description: "x4 point gain",
-            cost: new Decimal(5e3),
+            cost: new Decimal(3e3),
             unlocked(){return hasUpgrade("o",15)}
         },
         22: {
@@ -109,7 +111,7 @@ addLayer("o", {
         33: {
             title: "Oxygen XIII",
             description: "x100 points the 3rd time",
-            cost: new Decimal(3e15),
+            cost: new Decimal(2e15),
             unlocked(){return hasUpgrade("e",13)}
         },
         34: {
@@ -150,6 +152,150 @@ addLayer("o", {
     passiveGeneration(){return hasUpgrade("e",14)},
     autoUpgrade(){return hasMilestone("c",0)}
 }),
+addLayer("p", {
+    name: "phosphorus", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "P", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+		points: new Decimal(0),
+    }},
+    color: "#E8A500",
+    requires: new Decimal("1e297"), // Can be a function that takes requirement increases into account
+    resource: "phosphorus", // Name of prestige currency
+    baseResource: "oxygen", // Name of resource prestige is based on
+    baseAmount() {return player.o.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.1, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 1, // Row the layer is in on the tree (0 is the first row)
+    layerShown(){return hasUpgrade("t",71)},
+    branches: ["o", "n"],
+    tabFormat: {
+        "Upgrades": {
+            content: [
+                "main-display",
+                "blank",
+                "upgrades"
+            ],
+            
+        },
+    },
+    passiveGeneration(){return true},
+    upgrades: {
+        11: {
+            title: "Phosphorus I",
+            description: "Phosphorus boosts point gain",
+            cost: new Decimal(500),
+            effect() {
+                return player.p.points.add(1).pow(0.15)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
+        12: {
+            title: "Phosphorus II",
+            description: "Phosphorus boosts oxygen gain",
+            cost: new Decimal(1.2e3),
+            effect() {
+                return player.p.points.add(1).pow(0.15)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
+        13: {
+            title: "Phosphorus III",
+            description: "Phosphorus boosts carbon gain",
+            cost: new Decimal(1.3e4),
+            effect() {
+                return player.p.points.add(1).pow(0.15)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
+        14: {
+            title: "Phosphorus IV",
+            description: "Phosphorus boosts nitrogen gain",
+            cost: new Decimal(1e5),
+            effect() {
+                return player.p.points.add(1).pow(0.15)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
+        15: {
+            title: "Phosphorus V",
+            description: "Phosphorus boosts token gain",
+            cost: new Decimal(1e6),
+            effect() {
+                return player.p.points.add(1).pow(0.01)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
+        21: {
+            title: "Phosphorus VI",
+            description: "Carbon resets nothing",
+            cost: new Decimal(2e7),
+            unlocked(){return hasUpgrade("p",15)},
+        },
+        22: {
+            title: "Phosphorus VII",
+            description: "Elements resets nothing",
+            cost: new Decimal(1e8),
+            unlocked(){return hasUpgrade("p",15)},
+        },
+        23: {
+            title: "Phosphorus VIII",
+            description: "Nitrogen resets nothing",
+            cost: new Decimal(2e9),
+            unlocked(){return hasUpgrade("p",15)},
+        },
+        24: {
+            title: "Phosphorus IX",
+            description: "Point gain is boosted",
+            cost: new Decimal(2e10),
+            unlocked(){return hasUpgrade("p",15)},
+            effect() {
+                return player.p.points.add(1).pow(0.1)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
+        25: {
+            title: "Phosphorus X",
+            description: "Oxygen gain is boosted by phosphorus",
+            cost: new Decimal(2e11),
+            unlocked(){return hasUpgrade("p",15)},
+            effect() {
+                return player.p.points.add(1).pow(0.1)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
+        31: {
+            title: "Phosphorus XI",
+            description: "Tokens are boosted ",
+            cost: new Decimal(1e38),
+            unlocked(){return hasUpgrade("p",25)},
+            effect() {
+                return player.p.points.add(1).pow(0.01)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
+        32: {
+            title: "Phosphorus XII",
+            description: "This upgrade does nothing :)",
+            cost: new Decimal(1e45),
+            unlocked(){return hasUpgrade("p",15)},
+        },
+        33: {
+            title: "Phosphorus XIII",
+            description: "This upgrade does nothing as well :)",
+            cost: new Decimal(1e60),
+            unlocked(){return hasUpgrade("p",15)},
+        },
+    }
+})
 
 addLayer("n", {
     name: "nitrogen", // This is optional, only used in a few places, If absent it just uses the layer id.
@@ -171,6 +317,7 @@ addLayer("n", {
         if (hasUpgrade('n', 21)) mult = mult.times(10)
         if (hasUpgrade('n', 22)) mult = mult.times(2)
         if (hasUpgrade('m', 14)) mult = mult.times(upgradeEffect('m', 14))
+        if (hasUpgrade('p', 14)) mult = mult.times(upgradeEffect('p', 14))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -276,6 +423,7 @@ challenges: {
 },
 passiveGeneration(){return hasMilestone("m",0)},
 passiveGeneration(){return hasUpgrade("t",52)},
+resetsNothing(){return hasUpgrade("t",23)},
 
 }),
 addLayer("m", {
@@ -303,7 +451,7 @@ addLayer("m", {
         return new Decimal(1)
     },
     row: "side", // Row the layer is in on the tree (0 is the first row)
-    layerShown(){return hasUpgrade("o",61), ! hasUpgrade("t",51) },
+    layerShown(){return hasUpgrade("o",61) && ! hasUpgrade("t",51) },
 
     tabFormat: {
         "Awards": {
@@ -396,6 +544,7 @@ addLayer("m", {
     },
     autoPrestige(){return hasUpgrade("m",15)}
 }),
+
 addLayer("t", {
     name: "tokens", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "❖", // This appears on the layer's node. Default is the id with the first letter capitalized
@@ -413,6 +562,8 @@ addLayer("t", {
     exponent: 0.1, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+        if (hasUpgrade('p', 15)) mult = mult.times(upgradeEffect('p', 15))
+        if (hasUpgrade('p', 31)) mult = mult.times(upgradeEffect('p', 31))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -502,6 +653,12 @@ addLayer("t", {
             cost: new Decimal(1e6),
             unlocked(){return hasUpgrade("t",51,52,53)},
         },
+        71: {
+            title: "Token Unlocker I",
+            description: "Unlock phosphorus",
+            cost: new Decimal(2e7),
+            unlocked(){return hasUpgrade("t",61)},
+        },
     },
     resetsNothing(){return true},
     passiveGeneration(){return hasUpgrade("t",32)},
@@ -531,6 +688,7 @@ addLayer("c", {
         if (hasUpgrade('n', 14)) mult = mult.times(upgradeEffect('n', 14))
         if (hasUpgrade('m', 13)) mult = mult.times(upgradeEffect('m', 13))
         if (hasUpgrade('t', 22)) mult = mult.times(upgradeEffect('t', 22))
+        if (hasUpgrade('p', 13)) mult = mult.times(upgradeEffect('p', 13))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -561,7 +719,7 @@ addLayer("c", {
         13: {
             title: "Carbon III",
             description: "Oxygen is boosted",
-            cost: new Decimal(1e3),
+            cost: new Decimal(550),
             effect() {
                 return player.points.add(1).pow(0.15)
             },
@@ -569,37 +727,37 @@ addLayer("c", {
         14: {
             title: "Carbon IV",
             description: "x1e3 oxygen",
-            cost: new Decimal(2e8),
+            cost: new Decimal(3e7),
         },
         15: {
             title: "Carbon V",
             description: "x25 Carbon",
-            cost: new Decimal(2e15),
+            cost: new Decimal(1e10),
         },
         21: {
             title: "Carbon VI",
             description: "x100 Carbon",
-            cost: new Decimal(2e16),
+            cost: new Decimal(2e13),
         },
         22: {
             title: "Carbon VII",
             description: "x200 Carbon",
-            cost: new Decimal(1e18),
+            cost: new Decimal(1e17),
         },
         23: {
             title: "Carbon VIII",
             description: "x400 Carbon",
-            cost: new Decimal(4e20),
+            cost: new Decimal(7e19),
         },
         24: {
             title: "Carbon IX",
             description: "x800 Carbon",
-            cost: new Decimal(1.5e23),
+            cost: new Decimal(2e22),
         },
         25: {
             title: "Carbon X",
             description: "x1e3 Oxygen",
-            cost: new Decimal(1e26),
+            cost: new Decimal(4e25),
         },
         31: {
             title: "Carbon XI",
@@ -664,6 +822,7 @@ addLayer("c", {
         
     },
     passiveGeneration(){return hasMilestone("c",1) || hasUpgrade("e",15)},
+    resetsNothing(){return hasUpgrade("p",21)},
 })
 
 addLayer("e", {
@@ -770,7 +929,8 @@ addLayer("e", {
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
         },
     },
-    autoPrestige(){return hasUpgrade("e",22)}
+    autoPrestige(){return hasUpgrade("e",22)},
+    resetsNothing(){return hasUpgrade("p",22)},
     
 
 })
@@ -1209,6 +1369,186 @@ addLayer("ac", {
             tooltip: "Get 1e8 Token",
             done(){return player.t.points.gte(1e8)},
             unlocked(){return player.t.points.gte(1)}
+        },
+        131: {
+            name: "70",
+            tooltip: "Get 1e10 Token",
+            done(){return player.t.points.gte(1e10)},
+            unlocked(){return player.t.points.gte(1)}
+        },
+        132: {
+            name: "71",
+            tooltip: "Get 1e12 Token",
+            done(){return player.t.points.gte(1e12)},
+            unlocked(){return player.t.points.gte(1)}
+        },
+        133: {
+            name: "72",
+            tooltip: "Get 1e14 Token",
+            done(){return player.t.points.gte(1e14)},
+            unlocked(){return player.t.points.gte(1)}
+        },
+        134: {
+            name: "73",
+            tooltip: "Get 1e16 Token",
+            done(){return player.t.points.gte(1e16)},
+            unlocked(){return player.t.points.gte(1)}
+        },
+        135: {
+            name: "74",
+            tooltip: "Get 1e20 Token",
+            done(){return player.t.points.gte(1e20)},
+            unlocked(){return player.t.points.gte(1)}
+        },
+        136: {
+            name: "75",
+            tooltip: "Get 1e25 Token",
+            done(){return player.t.points.gte(1e25)},
+            unlocked(){return player.t.points.gte(1)}
+        },
+        141: {
+            name: "76",
+            tooltip: "Get 1 phosphorus",
+            done(){return player.p.points.gte(1)},
+            unlocked(){return player.p.points.gte(1)}
+        },
+        142: {
+            name: "77",
+            tooltip: "Get 10 phosphorus",
+            done(){return player.p.points.gte(10)},
+            unlocked(){return player.p.points.gte(1)}
+        },
+        143: {
+            name: "78",
+            tooltip: "Get 100 phosphorus",
+            done(){return player.p.points.gte(100)},
+            unlocked(){return player.p.points.gte(1)}
+        },
+        144: {
+            name: "79",
+            tooltip: "Get 1e3 phosphorus",
+            done(){return player.p.points.gte(1e3)},
+            unlocked(){return player.p.points.gte(1)}
+        },
+        145: {
+            name: "80",
+            tooltip: "Get 1e4 phosphorus",
+            done(){return player.p.points.gte(1e4)},
+            unlocked(){return player.p.points.gte(1)}
+        },
+        146: {
+            name: "81",
+            tooltip: "Get 1e6 phosphorus",
+            done(){return player.p.points.gte(1e6)},
+            unlocked(){return player.p.points.gte(1)}
+        },
+        151: {
+            name: "82",
+            tooltip: "Get 1e8 phosphorus",
+            done(){return player.p.points.gte(1e8)},
+            unlocked(){return player.p.points.gte(1)}
+        },
+        152: {
+            name: "83",
+            tooltip: "Get 1e10 phosphorus",
+            done(){return player.p.points.gte(1e10)},
+            unlocked(){return player.p.points.gte(1)}
+        },
+        153: {
+            name: "84",
+            tooltip: "Get 1e12 phosphorus",
+            done(){return player.p.points.gte(1e12)},
+            unlocked(){return player.p.points.gte(1)}
+        },
+        154: {
+            name: "85",
+            tooltip: "Get 1e14 phosphorus",
+            done(){return player.p.points.gte(1e14)},
+            unlocked(){return player.p.points.gte(1)}
+        },
+        155: {
+            name: "86",
+            tooltip: "Get 1e16 phosphorus",
+            done(){return player.p.points.gte(1e16)},
+            unlocked(){return player.p.points.gte(1)}
+        },
+        156: {
+            name: "87",
+            tooltip: "Get 1e20 phosphorus",
+            done(){return player.p.points.gte(1e20)},
+            unlocked(){return player.p.points.gte(1)}
+        },
+        161: {
+            name: "88",
+            tooltip: "Get 1e24 phosphorus",
+            done(){return player.p.points.gte(1e24)},
+            unlocked(){return player.p.points.gte(1)}
+        },
+        162: {
+            name: "89",
+            tooltip: "Get 1e28 phosphorus",
+            done(){return player.p.points.gte(1e28)},
+            unlocked(){return player.p.points.gte(1)}
+        },
+        163: {
+            name: "90",
+            tooltip: "Get 1e32 phosphorus",
+            done(){return player.p.points.gte(1e32)},
+            unlocked(){return player.p.points.gte(1)}
+        },
+        164: {
+            name: "91",
+            tooltip: "Get 1e38 phosphorus",
+            done(){return player.p.points.gte(1e38)},
+            unlocked(){return player.p.points.gte(1)}
+        },
+        165: {
+            name: "92",
+            tooltip: "Get 1e40 phosphorus",
+            done(){return player.p.points.gte(1e40)},
+            unlocked(){return player.p.points.gte(1)}
+        },
+        166: {
+            name: "93",
+            tooltip: "Get 1e50 phosphorus",
+            done(){return player.p.points.gte(1e50)},
+            unlocked(){return player.p.points.gte(1)}
+        },
+        171: {
+            name: "94",
+            tooltip: "Get 1e60 phosphorus",
+            done(){return player.p.points.gte(1e60)},
+            unlocked(){return player.p.points.gte(1)}
+        },
+        172: {
+            name: "95",
+            tooltip: "Get 1e70 Phosphorus",
+            done(){return player.p.points.gte(1e70)},
+            unlocked(){return player.p.points.gte(1)}
+        },
+        173: {
+            name: "96",
+            tooltip: "Get 1e80 phosphorus",
+            done(){return player.p.points.gte(1e80)},
+            unlocked(){return player.p.points.gte(1)}
+        },
+        174: {
+            name: "97",
+            tooltip: "Get 1e90 phosphorus",
+            done(){return player.p.points.gte(1e90)},
+            unlocked(){return player.p.points.gte(1)}
+        },
+        175: {
+            name: "98",
+            tooltip: "Get 1e100 phosphorus",
+            done(){return player.p.points.gte(1e100)},
+            unlocked(){return player.p.points.gte(1)}
+        },
+        176: {
+            name: "99",
+            tooltip: "Get 1e120 phosphorus",
+            done(){return player.p.points.gte(1e120)},
+            unlocked(){return player.p.points.gte(1)}
         },
         
     },
