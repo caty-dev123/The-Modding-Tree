@@ -34,18 +34,18 @@ addLayer("o", {
         11: {
             title: "Oxygen I",
             description: "Double your point gain.",
-            cost: new Decimal(5),
+            cost: new Decimal(1),
             
         },
         12: {
             title: "Oxygen II",
             description: "Triple your point gain.",
-            cost: new Decimal(25),
+            cost: new Decimal(15),
         },
         13: {
             title: "Oxygen III",
             description: "Boost point gain by oxygen",
-            cost: new Decimal(50),
+            cost: new Decimal(30),
             effect() {
                 return player[this.layer].points.add(1).pow(0.25)
             },
@@ -54,7 +54,7 @@ addLayer("o", {
         14: {
             title: "Oxygen IV",
             description: "Boost point gain by point gain",
-            cost: new Decimal(100),
+            cost: new Decimal(75),
             effect() {
                 return player.points.add(1).pow(0.205)
             },
@@ -63,19 +63,19 @@ addLayer("o", {
         15: {
             title: "Oxygen V",
             description: "x100 point gain",
-            cost: new Decimal(230),
+            cost: new Decimal(160),
            
         },
         21: {
             title: "Oxygen VI",
             description: "x4 point gain",
-            cost: new Decimal(3e3),
+            cost: new Decimal(1e3),
             unlocked(){return hasUpgrade("o",15)}
         },
         22: {
             title: "Oxygen VII",
             description: "x8 point gain",
-            cost: new Decimal(7e3),
+            cost: new Decimal(4e3),
             unlocked(){return hasUpgrade("o",15)}
         },
         23: {
@@ -87,7 +87,7 @@ addLayer("o", {
         24: {
             title: "Oxygen IX",
             description: "x24 point gain",
-            cost: new Decimal(1e6),
+            cost: new Decimal(5e5),
             unlocked(){return hasUpgrade("o",15)}
         },
         25: {
@@ -399,6 +399,8 @@ resetsNothing(){return hasUpgrade("t",23)},
 
 }),
 
+
+
 addLayer("am", {
     name: "amino-acids", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "Am", // This appears on the layer's node. Default is the id with the first letter capitalized
@@ -422,7 +424,7 @@ addLayer("am", {
         return new Decimal(1)
     },
     row: 2, // Row the layer is in on the tree (0 is the first row)
-    layerShown(){return hasUpgrade("p",25)},
+    layerShown(){return hasUpgrade("p",25) || hasUpgrade("e",31)},
     branches: ["n", "o", "c"],
     tabFormat: {
         "Upgrades": {
@@ -985,26 +987,21 @@ addLayer("ac", {
 		points: new Decimal(0),
     }},
     color: "#FFEA00",
-    requires: new Decimal(10), // Can be a function that takes requirement increases into account
     resource: "achievements", // Name of prestige currency
     baseResource: "points", // Name of resource prestige is based on
-    baseAmount() {return player.points}, // Get the current amount of baseResource
-    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 0.5, // Prestige currency exponent
-    gainMult() { // Calculate the multiplier for main currency from bonuses
-        mult = new Decimal(1)
-        return mult
-    },
+    type: "none", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     gainExp() { // Calculate the exponent on main currency from bonuses
         return new Decimal(1)
     },
     row: "side", // Row the layer is in on the tree (0 is the first row)
     layerShown(){return true},
+    update() {player.ac.points = new Decimal(player.ac.achievements.length)},
     achievements: {
         11: {
             name: "1",
             tooltip: "Get 1 point",
             done(){return player.points.gte(1)},
+           
             
         },
         12: {
