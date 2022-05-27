@@ -395,7 +395,8 @@ challenges: {
 },
 passiveGeneration(){return hasMilestone("m",0)},
 passiveGeneration(){return hasUpgrade("t",52)},
-resetsNothing(){return hasUpgrade("t",23)},
+resetsNothing(){return hasUpgrade("p",23)},
+autoUpgrade(){return hasUpgrade("am",13)}
 
 }),
 
@@ -425,7 +426,7 @@ addLayer("am", {
     },
     row: 2, // Row the layer is in on the tree (0 is the first row)
     layerShown(){return hasUpgrade("p",25) || hasUpgrade("e",31)},
-    branches: ["n", "o", "c"],
+    branches: ["n", "c"],
     tabFormat: {
         "Upgrades": {
             content: [
@@ -444,7 +445,64 @@ addLayer("am", {
             cost: new Decimal(5),
 
         },
+        12: {
+            title: "Amino Acid II",
+            description: "Autobuy carbon upgrades",
+            cost: new Decimal(25),
+
+        },
+        13: {
+            title: "Amino Acid III",
+            description: "Autobuy nitrogen upgrades",
+            cost: new Decimal(250),
+
+        },
+        14: {
+            title: "Amino Acid IV",
+            description: "Unlock protein",
+            cost: new Decimal(2.5e3),
+
+        },
     }
+
+}),
+
+addLayer("pr", {
+    name: "proteins", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "Pr", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+		points: new Decimal(0),
+    }},
+    color: "#FFFDB9",
+    requires: new Decimal(3e3), // Can be a function that takes requirement increases into account
+    resource: "protein", // Name of prestige currency
+    baseResource: "amino-acids", // Name of resource prestige is based on
+    baseAmount() {return player.am.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.05, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 2, // Row the layer is in on the tree (0 is the first row)
+    layerShown(){return hasUpgrade("am",14)},
+    branches: ["am"],
+    tabFormat: {
+        "Upgrades": {
+            content: [
+                "main-display",
+                "blank",
+                "upgrades"
+            ],
+            
+        },
+    },
+    passiveGeneration(){return true}
 
 })
 addLayer("m", {
@@ -748,42 +806,42 @@ addLayer("c", {
         14: {
             title: "Carbon IV",
             description: "x1e3 oxygen",
-            cost: new Decimal(3e7),
+            cost: new Decimal(1e7),
         },
         15: {
             title: "Carbon V",
             description: "x25 Carbon",
-            cost: new Decimal(1e10),
+            cost: new Decimal(5e9),
         },
         21: {
             title: "Carbon VI",
             description: "x100 Carbon",
-            cost: new Decimal(2e13),
+            cost: new Decimal(21e13),
         },
         22: {
             title: "Carbon VII",
             description: "x200 Carbon",
-            cost: new Decimal(1e17),
+            cost: new Decimal(5e16),
         },
         23: {
             title: "Carbon VIII",
             description: "x400 Carbon",
-            cost: new Decimal(7e19),
+            cost: new Decimal(3e19),
         },
         24: {
             title: "Carbon IX",
             description: "x800 Carbon",
-            cost: new Decimal(2e22),
+            cost: new Decimal(1e22),
         },
         25: {
             title: "Carbon X",
             description: "x1e3 Oxygen",
-            cost: new Decimal(4e25),
+            cost: new Decimal(2e25),
         },
         31: {
             title: "Carbon XI",
             description: "x1e5 Oxygen",
-            cost: new Decimal(1e31),
+            cost: new Decimal(5e30),
             unlocked(){return hasUpgrade("n",15)}
         },
         32: {
@@ -844,6 +902,7 @@ addLayer("c", {
     },
     passiveGeneration(){return hasMilestone("c",1) || hasUpgrade("e",15)},
     resetsNothing(){return hasUpgrade("p",21)},
+    autoUpgrade(){return hasUpgrade("am",12)}
 })
 
 addLayer("e", {

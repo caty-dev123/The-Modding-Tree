@@ -13,11 +13,26 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.91",
-	name: "The Fix",
+	num: "1.0",
+	name: "Protiens",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+<h3>v1.0</h3><br>
+- started working on protein <br>
+- Added an amino acid upgrade.
+
+<br>
+<br>
+<br>
+
+<h3>v0.92</h3><br>
+- Fixed a phosphorus upgrade <br>
+
+<br>
+<br>
+<br>
+
 <h3>v0.91</h3><br>
 - Fixed many many many many many things <br>
 
