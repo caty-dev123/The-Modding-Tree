@@ -24,7 +24,8 @@ addLayer("b", {
     hotkeys: [
         {key: "b", description: "B: Reset for bacteria", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return true}
+    layerShown(){return true},
+
 })
 
 addLayer("ac", {
@@ -45,4 +46,12 @@ addLayer("ac", {
     row: "side", // Row the layer is in on the tree (0 is the first row)
     layerShown(){return true},
     update() {player.ac.points = new Decimal(player.ac.achievements.length)},
+    achievements: {
+        11: {
+            name: "The first bacteria",
+            tooltip: "Get 1 bacteria"
+        
+        },
+        
+    }
 })
