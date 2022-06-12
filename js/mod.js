@@ -1,5 +1,5 @@
 let modInfo = {
-	name: "The ??? Tree",
+	name: "The Boring Tree",
 	id: "mymod",
 	author: "nobody",
 	pointsName: "points",
@@ -40,9 +40,11 @@ function canGenPoints(){
 // Calculate points/sec!
 function getPointGen() {
 	if(!canGenPoints())
-		return new Decimal(0)
-
+	return new Decimal(0)
+		
 	let gain = new Decimal(1)
+	if (hasUpgrade('apsg',11)) gain = gain.times(upgradeEffect('apsg',11))
+	if (hasUpgrade('a',13)) gain = gain.times(upgradeEffect('a',13))
 	return gain
 }
 
