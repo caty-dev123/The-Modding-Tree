@@ -41,7 +41,11 @@ addLayer("a", {
             title: "good ants make good ants",
             description: "ANTS BOOST POINT GAIN AS WELL :):):):)::):):):):)",
             cost: new Decimal(10),
-            unlocked(){return hasChallenge("apsg",11)}
+            unlocked(){return hasChallenge("apsg",11)},
+            effect() {
+                return player.a.points.add(1).pow(0.5)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
         },
     },
 
@@ -62,10 +66,7 @@ addLayer("a", {
             name: "DONT LOOK AT TOOLTIP",
             tooltip: "Get 111 points",
             done() {return player.points.gte(111)},
-            effect() {
-                return player.a.points.add(1).pow(0.5)
-            },
-            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+            
         
         },
         
@@ -145,6 +146,13 @@ addLayer("apsg", {
             cost: new Decimal(6),
     
         },
+        14: {
+            title: "Become rich $$$",
+            description: "SOOO RICH LIKE IM GETTING A JOB wait I have to get job power first :((((((((((",
+            cost: new Decimal(10),
+            unlocked(){return hasChallenge("apsg",12)}
+    
+        },
     },
 
     challenges: {
@@ -155,6 +163,45 @@ addLayer("apsg", {
             canComplete: function() {return player.points.gte(100)},
             
         },
+
+        12: {
+            name: "Good point(s) with points(s)",
+            challengeDescription: "I think this one does something cool like divides point gain maybe not but still hope you enjoy the reward is money $$$",
+            goal: "100",
+            canComplete: function() {return player.points.gte(100)},
+            
+        },
         
     }
+}),
+
+("jp", {
+    name: "job power", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "JP", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+		points: new Decimal(0),
+    }},
+    color: "#747474",
+    requires: new Decimal(25), // Can be a function that takes requirement increases into account
+    resource: "Job power", // Name of prestige currency
+    baseResource: "ants", // Name of resource prestige is based on
+    baseAmount() {return player.a.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.5, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 1, // Row the layer is in on the tree (0 is the first row)
+    layerShown(){return hasUpgrade("apsg",14)},
+
+    hotkeys: [
+        {key: "j", description: "hmm", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+
 })

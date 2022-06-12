@@ -45,6 +45,7 @@ function getPointGen() {
 	let gain = new Decimal(1)
 	if (hasUpgrade('apsg',11)) gain = gain.times(upgradeEffect('apsg',11))
 	if (hasUpgrade('a',13)) gain = gain.times(upgradeEffect('a',13))
+	if (inChallenge("apsg",12)) gain = gain.div(2)
 	return gain
 }
 
