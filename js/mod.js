@@ -13,12 +13,18 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.1",
-	name: "THE MOST BORING UPDATE ON EARTTHTHTHTHT",
+	num: "0.2",
+	name: "This game is not fun",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-<h3>v0.0</h3><br>
+<h3>v0.2</h3><br>
+		- Added many cool things <br>
+		- Also did some other things like making everything look as horrible as possible
+		<br>
+		<br>
+
+<h3>v0.1</h3><br>
 		- Added JOB POWER jk i didn't <br>
 		- So many cool feature for example why are you playing this horrible game?
 		<br>
@@ -52,6 +58,8 @@ function getPointGen() {
 	if (hasUpgrade('apsg',11)) gain = gain.times(upgradeEffect('apsg',11))
 	if (hasUpgrade('a',13)) gain = gain.times(upgradeEffect('a',13))
 	if (inChallenge("apsg",12)) gain = gain.div(2)
+	gain = gain.times(buyableEffect('jp', 11))
+	if (inChallenge("apsg",21)) gain = gain.div(5)
 	return gain
 }
 

@@ -15,6 +15,7 @@ addLayer("a", {
     exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+        if (hasUpgrade('a', 14)) mult = mult.times(upgradeEffect('a', 14))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -47,6 +48,16 @@ addLayer("a", {
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
         },
+        14: {
+            title: "Great ants make ants that boost them selves ",
+            description: "No inflations please I BEG OF YOU PLEEEEASSSEEEEE",
+            cost: new Decimal(10),
+            unlocked(){return hasUpgrade("apsg",23)},
+            effect() {
+                return player.a.points.add(1).pow(0.01)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
     },
 
     achievements: {
@@ -70,7 +81,10 @@ addLayer("a", {
         
         },
         
-    }
+    },
+    passiveGeneration(){return hasUpgrade("apsg",21)},
+    autoUpgrade(){return hasChallenge("apsg",21)}
+
 }),
 
 addLayer("apsg", {
@@ -122,7 +136,42 @@ addLayer("apsg", {
             ],
           unlocked(){return hasUpgrade("apsg",13)}
         },
+        "APSG cool achievements": {
+            content: [
+                "main-display",
+                "blank",
+                "achievements"
+            ],
+          unlocked(){return hasAchievement("jp",11)}
+        },
         
+    },
+    achievements: {
+        11: {
+            name: "Ant power",
+            tooltip: "have 6 job power (That has nothing to deal with apsg (PS. PS. Why am I writing this (PS inside a PS inside a () This is useless)))",
+            done() {return player.jp.points.gte(6)}
+        },
+        12: {
+            name: "Ant power strong",
+            tooltip: "Have 44 APSG",
+            done() {return player.apsg.points.gte(44)}
+        },
+        13: {
+            name: "Ant power strong deja vu",
+            tooltip: "Didn't I say no?",
+            done() {return hasUpgrade("apsg",22)}
+        },
+        14: {
+            name: "Ant power strong generator",
+            tooltip: "100 APSG be like",
+            done() {return player.apsg.points.gte(100)}
+        },
+        15: {
+            name: "Ant power strong generator inflation",
+            tooltip: "INFLATION GONNA BE REALLLLL BAD",
+            done() {return hasUpgrade("a",14)}
+        },
     },
     upgrades: {
         11: {
@@ -153,6 +202,48 @@ addLayer("apsg", {
             unlocked(){return hasChallenge("apsg",12)}
     
         },
+        15: {
+            title: "Become a super cool job employee",
+            description: "COPYRIGHT asdjkfadsfhasdjkfhadsfjkdas <-- please no sue me I have $0 in this tree currently",
+            cost: new Decimal(21),
+            unlocked(){return hasUpgrade("apsg",14)}
+    
+        },
+        21: {
+            title: "The layer ain't appearing be like XXDDDD",
+            description: "Are you annoyed? no? oh. if your annoyed then this upgrade makes you gain 100% ants which makes progress SOOO COOOOL",
+            cost: new Decimal(31),
+            unlocked(){return player.jp.points.gte(1)}
+    
+        },
+        22: {
+            title: "No.",
+            description: "no. (I'm getting serious deja vu right now)",
+            cost: new Decimal(1),
+            unlocked(){return player.jp.points.gte(4)}
+    
+        },
+        23: {
+            title: "Progression (PS. the job buyable is A FAKE COOL ONE COMING SOON 2023 (PS. JK (Why am I doing this?)))",
+            description: "Unlock some ant upgrades for no reason at all unlock APSG upgrades????",
+            cost: new Decimal(50),
+            unlocked(){return player.jp.points.gte(8)}
+    
+        },
+        24: {
+            title: "APSG I (Not so OP)",
+            description: "Unlock a challenge",
+            cost: new Decimal(100),
+            unlocked(){return hasUpgrade("apsg",23)}
+    
+        },
+        25: {
+            title: "APSG II (OP)",
+            description: "APSG boost points but lil better (knock off edition)",
+            cost: new Decimal(101),
+            unlocked(){return hasUpgrade("apsg",23)}
+    
+        },
     },
 
     challenges: {
@@ -169,6 +260,14 @@ addLayer("apsg", {
             challengeDescription: "I think this one does something cool like divides point gain maybe not but still hope you enjoy the reward is money $$$",
             goal: "100",
             canComplete: function() {return player.points.gte(100)},
+            
+        },
+
+        21: {
+            name: "KNOCK OFF VERISON 1",
+            challengeDescription: "Complete this challenge and no need to touch ant EVER AGAIN MWHAHAAHHAA",
+            goal: "150",
+            canComplete: function() {return player.points.gte(150)},
             
         },
         
@@ -189,7 +288,7 @@ addLayer("jp", {
     baseResource: "ants", // Name of resource prestige is based on
     baseAmount() {return player.a.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 0.5, // Prestige currency exponent
+    exponent: 0.25, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         return mult
@@ -203,5 +302,41 @@ addLayer("jp", {
     hotkeys: [
         {key: "j", description: "hmm", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
+
+    buyables: {
+        11: {
+            cost(x) { return new Decimal(1).mul(x) },
+            display() { let data = tmp[this.layer].buyables[this.id]
+                return "Cost: " + format(data.cost) + " Job Power\n\
+                Work Hours " + player[this.layer].buyables[this.id] + " \n\
+                x" + format(data.effect) + " boost to Points";},
+            title: "WORK AT SUPER COOL JOB LEGIT",
+            canAfford() { return player[this.layer].points.gte(this.cost()) },
+            buy() {
+                player[this.layer].points = player[this.layer].points.sub(this.cost())
+                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            effect() {
+                
+                return player[this.layer].points.add(1).pow(0.5)
+               
+            },
+
+            
+           
+            unlocked(){return hasUpgrade("apsg",15)}
+        },
+        
+    },
+
+    achievements: {
+        11: {
+            name: "I have a job now!",
+            tooltip: "get 1 job power to get money???",
+            done() {return player.jp.points.gte(1)}
+        
+        },
+        
+    },
 
 })
