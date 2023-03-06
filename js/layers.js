@@ -127,8 +127,7 @@ addLayer("ac", {
         return new Decimal(1)
     },
     row: "side", // Row the layer is in on the tree (0 is the first row)
-    layerShown(){return true},
-    unlocked() {return player.ba.points.gte(2)},
+    layerShown(){return player.ba.points.gte(2)},
     autoPrestige(){return hasUpgrade('rf',11)},
     resetsNothing(){return hasUpgrade('rf',12)},
     achievements: {
@@ -251,8 +250,7 @@ addLayer("rf", {
         return new Decimal(1)
     },
     row: "side", // Row the layer is in on the tree (0 is the first row)
-    layerShown(){return true},
-    unlocked() {return player.ac.points.gte(500)},
+    layerShown(){return player.ac.points.gte(500)},
     branches: ['ac'],
     upgrades: {
         11: {
@@ -298,8 +296,7 @@ addLayer("ba", {
         unlocked() {return hasUpgrade('pop', 23)} // Determines if you can use the hotkey, optional
     }
 ],
-    layerShown(){return true},
-    unlocked(){return hasUpgrade('pop', 23)},
+    layerShown(){return hasUpgrade('pop', 23)},
     branches: ['pop'],
             milestones: {
                 1: {
@@ -386,6 +383,7 @@ addLayer("ma", {
         unlocked() {return hasUpgrade('ba', 31)} // Determines if you can use the hotkey, optional
     }
 ],
+layerShown(){return hasUpgrade('ba',31)},
 branches: ['ba'],
 upgrades: {
     11: {
@@ -418,7 +416,7 @@ addLayer("s", {
         return new Decimal(1)
     },
     row: 1, // Row the layer is in on the tree (0 is the first row)
-    unlocked(){return hasUpgrade('ma',11)},
+    layerShown(){return hasUpgrade('ma',11)},
     hotkeys: [
     {
         key: "r", // What the hotkey button is. Use uppercase if it's combined with shift, or "ctrl+x" for holding down ctrl.
@@ -432,6 +430,11 @@ upgrades: {
     11: {
         title: "science",
         description: "bubbles",
+        cost: new Decimal(0)
+    },
+    12: {
+        title: "you know what would be funny?",
+        description: "idk",
         cost: new Decimal(1)
     }
 }
