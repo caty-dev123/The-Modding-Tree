@@ -719,6 +719,7 @@ addLayer("c", {
         unlocked() {return hasUpgrade('fw', 11)} // Determines if you can use the hotkey, optional
     }
 ],
+layerShown(){return player.fw.points.gte(1)},
 branches: ['pop', 'ma'],
 upgrades: {
     11: {
@@ -770,4 +771,5 @@ addLayer("sh", {
     }
 ],
 branches: ['ba', 'ma', 'c', 's'],
+layerShown(){return player.fw.points.gte(1.5e3)},
 })
