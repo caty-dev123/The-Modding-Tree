@@ -13,12 +13,22 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.21",
-	name: "umm wait",
+	num: "0.4",
+	name: "shower thoughts",
 }
 
-let changelog = `<h1>Changelog:</h1><br>
+let changelog = `<h1>Changelog:</h1>
+<br><h3>v0.4</h3><br>
+- shower thoughts layer is being made<br>
+- more stuff in the funny warrior layer <br>
+- lots of upgrades <br>
+- fixed a few bugs
 <h3>v0.3</h3><br>
+		- upgrades<br>
+		- new money layer <br>
+		- lots of new things such as THE FUNNY WARRIORS <br>
+		- stuff
+<h3>v0.21</h3><br>
 		- fixed large bug.<br>
 <h3>v0.2</h3><br>
 		- THE FUN LAYER.<br>
@@ -63,6 +73,13 @@ function getPointGen() {
 	if (hasUpgrade('pop', 32)) gain = gain.times(10)
 	if (hasUpgrade('ba', 21)) gain = gain.times(2)
 	if (hasUpgrade('s', 11)) gain = gain.times(2)
+	if (hasUpgrade('s', 21)) gain = gain.times(1.5)
+	if (hasUpgrade('s', 22)) gain = gain.times(3)
+	if (hasUpgrade('ma', 12)) gain = gain.times(4)
+	if (hasUpgrade('ma', 21)) gain = gain.times(upgradeEffect('ma', 21))
+	if (hasUpgrade('c', 12)) gain = gain.times(upgradeEffect('c', 12))
+	if (hasUpgrade('pop', 14)) gain = gain.times(2)
+	if (hasUpgrade('pop', 24)) gain = gain.times(4)
 	return gain
 }
 
