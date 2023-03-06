@@ -1,8 +1,8 @@
 let modInfo = {
-	name: "The ??? Tree",
-	id: "mymod",
-	author: "nobody",
-	pointsName: "points",
+	name: "The Normal Generic Thingy Fun Basic Tree",
+	id: "basicgeneric",
+	author: "henloman123",
+	pointsName: "points that are normal points",
 	modFiles: ["layers.js", "tree.js"],
 
 	discordName: "",
@@ -13,14 +13,23 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0",
-	name: "Literally nothing",
+	num: "0.2",
+	name: "umm",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+<h3>v0.2</h3><br>
+		- THE FUN LAYER.<br>
+		- THE FUNNY lAYER <br>
+		- more more upgrades <br>
+		- science? math? <br>
+		-why???
+	<h3>v0.1</h3><br>
+		- THE BA LAYER.<br>
+		- more more upgrades
 	<h3>v0.0</h3><br>
-		- Added things.<br>
-		- Added stuff.`
+		- THE POP LAYER.<br>
+		- it started`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -43,6 +52,15 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(1)
+	if (hasUpgrade('pop', 11)) gain = gain.times(2)
+	if (hasUpgrade('pop', 12)) gain = gain.times(4)
+	if (hasUpgrade('pop', 13)) gain = gain.times(upgradeEffect('pop', 13))
+	if (hasUpgrade('pop', 22)) gain = gain.times(6)
+	if (hasUpgrade('ba', 12)) gain = gain.times(3)
+	if (hasUpgrade('ba', 11)) gain = gain.times(2)
+	if (hasUpgrade('pop', 32)) gain = gain.times(10)
+	if (hasUpgrade('ba', 21)) gain = gain.times(2)
+	if (hasUpgrade('s', 11)) gain = gain.times(2)
 	return gain
 }
 
