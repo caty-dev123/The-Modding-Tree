@@ -13,11 +13,20 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.41",
-	name: "thoughts",
+	num: "0.51",
+	name: "more",
 }
 
 let changelog = `<h1>Changelog:</h1>
+<br><h3>v0.51</h3><br>
+-a few new stuff <br>
+- more pop ugprade
+
+<br><h3>v0.5</h3><br>
+-added spop layer <br>
+- added big brain layer <br>
+- layers have more upgrades <br>
+-lots of new stuff
 <br><h3>v0.41</h3><br>
 - fixed bugs <br>
 - stuff
@@ -83,6 +92,12 @@ function getPointGen() {
 	if (hasUpgrade('c', 12)) gain = gain.times(upgradeEffect('c', 12))
 	if (hasUpgrade('pop', 14)) gain = gain.times(2)
 	if (hasUpgrade('pop', 24)) gain = gain.times(4)
+	if (hasUpgrade('pop', 34)) gain = gain.times(15)
+	if (hasUpgrade('fw', 21)) gain = gain.times(6)
+	if (hasUpgrade('su', 11)) gain = gain.times(upgradeEffect('su', 11))
+	if (hasUpgrade('fw', 13)) gain = gain.times(3)
+	if (hasUpgrade('su', 12)) gain = gain.times(upgradeEffect('su', 12))
+	if (hasUpgrade('spop', 11)) gain = gain.times(2)
 	return gain
 }
 

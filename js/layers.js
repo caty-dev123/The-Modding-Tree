@@ -16,6 +16,7 @@ addLayer("pop", {
     gainMult() {
         let mult = new Decimal(1)
         if (hasUpgrade('pop', 21)) mult = mult.times(upgradeEffect('pop', 21))
+        if (hasUpgrade('su', 13)) mult = mult.times(upgradeEffect('su', 13))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -30,6 +31,7 @@ addLayer("pop", {
     resetsNothing(){return hasUpgrade('ba',31)},
     autoPrestige(){return hasUpgrade('rf',13)},
     resetsNothing(){return hasUpgrade('rf',13)},
+    autoUpgrade(){return hasUpgrade('c',21)},
     upgrades: {
         11: {
             title: "1 upgrade 1 basic multi point basic thing",
@@ -98,6 +100,30 @@ addLayer("pop", {
             cost: new Decimal(7e12),
             unlocked() {return player.c.points.gte(60)}
         },
+        34: {
+            title: "Medium Multiplier",
+            description: "medium = small = tiny ",
+            cost: new Decimal(1e13),
+            unlocked() {return player.c.points.gte(95)}
+        },
+        41: {
+            title: "Progressions",
+            description: "aaaaaaaaa ",
+            cost: new Decimal(3e20),
+            unlocked() {return player.sh.points.gte(5)}
+        },
+        42: {
+            title: "Progressions 2",
+            description: "PART 2!!! yay ",
+            cost: new Decimal(5e20),
+            unlocked() {return player.sh.points.gte(5)}
+        },
+        43: {
+            title: "Progressions 3",
+            description: "PART 3 is good ",
+            cost: new Decimal(2.5e21),
+            unlocked() {return player.spop.points.gte(3)}
+        },
     },
     achievements: {
         11: {
@@ -124,6 +150,47 @@ addLayer("pop", {
         },
     }
 }),
+addLayer("spop", {
+    name: "super points of points", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "SPOP", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+		points: new Decimal(0),
+    }},
+    color: "#346965",
+    requires: new Decimal(1e20), // Can be a function that takes requirement increases into account
+    resource: "super points of points", // Name of prestige currency
+    baseResource: "points of points", // Name of resource prestige is based on
+    baseAmount() {return player.pop.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.5, // Prestige currency exponent
+    gainMult() {
+        let mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    layerShown(){return hasMilestone('ba',4)},
+    row: 1, // Row the layer is in on the tree (0 is the first row)
+    hotkeys: [
+        {
+            key: "u", // What the hotkey button is. Use uppercase if it's combined with shift, or "ctrl+x" for holding down ctrl.
+            description: "u: reset your pop for spop", // The description of the hotkey that is displayed in the game's How To Play tab
+            onPress() { if (player.spop.unlocked) doReset("spop") },
+            unlocked() {return hasMilestone('ba', 4)}, // Determines if you can use the hotkey, optional
+        }
+    ],
+    branches: ['pop','ma'],
+    upgrades: {
+        11: {
+            title: "upgrades are cliche",
+            description: "my name is super points of points",
+            cost: new Decimal(1),
+        },
+    }
+}),
 addLayer("ac", {
     name: "achievements", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "YAY!", // This appears on the layer's node. Default is the id with the first letter capitalized
@@ -142,6 +209,9 @@ addLayer("ac", {
     directMult() {
         let mult = new Decimal(1)
         if (hasUpgrade('fw', 11)) mult = mult.mul(2)
+        if (hasUpgrade('pop', 41)) mult = mult.div(1.2)
+        if (hasUpgrade('pop', 42)) mult = mult.div(1.5)
+        if (hasUpgrade('pop', 43)) mult = mult.div(2.5)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -355,6 +425,54 @@ addLayer("ac", {
             done() {return player.sh.points.gte(1)},
             unlocked() {return player.c.points.gte(25)}
         },
+        65: {
+            name: "uh oh the candy",
+            goalTooltip: "THIS ISN'T GOOD",
+            done() {return player.su.points.gte(1)},
+            unlocked() {return player.sh.points.gte(1)}
+        },
+        66: {
+            name: "life",
+            goalTooltip: "life",
+            done() {return player.fw.points.gte(5e4)},
+            unlocked() {return player.sh.points.gte(1)}
+        },
+        71: {
+            name: "basically basic",
+            goalTooltip: "basic basics lalallal",
+            done() {return player.ba.points.gte(300)},
+            unlocked() {return player.sh.points.gte(5)}
+        },
+        72: {
+            name: "freinds",
+            goalTooltip: "basic basics lalallal",
+            done() {return player.spop.points.gte(1)},
+            unlocked() {return player.spop.points.gte(1)}
+        },
+        73: {
+            name: "serious funny",
+            goalTooltip: "too many things to do ",
+            done() {return player.rf.points.gte(3800)},
+            unlocked() {return player.spop.points.gte(1)}
+        },
+        74: {
+            name: "super duper",
+            goalTooltip: "really cool awesome super duper ",
+            done() {return hasUpgrade('spop',11)},
+            unlocked() {return player.spop.points.gte(1)}
+        },
+        75: {
+            name: "super duper super duper 2.0 mega giga ultimate",
+            goalTooltip: "really cool awesome super duper x2 ",
+            done() {return player.spop.points.gte(10)},
+            unlocked() {return player.spop.points.gte(1)}
+        },
+        76: {
+            name: "big brain moment",
+            goalTooltip: "im smart",
+            done() {return player.bb.points.gte(1)},
+            unlocked() {return player.spop.points.gte(5)}
+        },
     }
 }),
 addLayer("rf", {
@@ -450,6 +568,7 @@ addLayer("fw", {
     branches: ['rf'],
     autoPrestige(){return hasUpgrade('fw',12)},
     resetsNothing(){return hasUpgrade('fw',12)},
+    canBuyMax(){return hasUpgrade('fw',23)},
     milestones: {
         1: {
             requirementDescription: "1 funny warriors",
@@ -460,6 +579,11 @@ addLayer("fw", {
             requirementDescription: "1.5e3 funny warriors",
             effectDescription: "I think i'm gonna have a sugar rush later",
             done() { return player.fw.points.gte(1.5e3) },
+        },
+        3: {
+            requirementDescription: "2.5e4 funny warriors",
+            effectDescription: "Well it's time to gear up and save more cities with more warriors!",
+            done() { return player.fw.points.gte(2.5e4) },
         }
     },
     upgrades: {
@@ -474,10 +598,93 @@ addLayer("fw", {
             description: "You can now fight with sheilds",
             cost: new Decimal(1.5e3),
             unlocked() {return hasMilestone('fw',2)},           
+        },
+        13: {
+            title: "💣",
+            description: "You can now fight with bombs",
+            cost: new Decimal(2e4),
+            unlocked() {return hasMilestone('fw',3)},           
+        },
+        21: {
+            title: "CITY: jjjfambam jibwippf",
+            description: "You must save the city",
+            cost: new Decimal(1e4),
+            unlocked() {return hasMilestone('fw',2)},           
+        },
+        22: {
+            title: "CITY: qyvqm bjajl uqui",
+            description: "You must save the city",
+            cost: new Decimal(1.5e4),
+            unlocked() {return hasMilestone('fw',2)},           
+        },
+        23: {
+            title: "CITY: ghahgha jbwiwi ooapappaf lboablao",
+            description: "You must save the city",
+            cost: new Decimal(5e4),
+            unlocked() {return hasMilestone('fw',3)},           
         }
     }
 
-})
+}),
+addLayer("su", {
+    name: "sugar", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "🍬", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+		points: new Decimal(0),
+    }},
+    color: "#3ab08d",
+    requires: new Decimal(2e4), // Can be a function that takes requirement increases into account
+    resource: "sugar", // Name of prestige currency
+    baseResource: "funny warriors", // Name of resource prestige is based on
+    baseAmount() {return player.fw.points}, // Get the current amount of baseResource
+    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 1, // Prestige currency exponent
+    gainMult() {
+        let mult = new Decimal(1)
+
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: "side", // Row the layer is in on the tree (0 is the first row)
+    layerShown(){return hasUpgrade('fw',22)},
+    branches: ['fw'],
+    upgrades: {
+        11: {
+            title: "🍬 I",
+            description: "🍬 boosts point gain",
+            cost: new Decimal(1),
+            effect() {
+                return player[this.layer].points.add(1).pow(0.5)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+            cost: new Decimal(1)
+        },
+        12: {
+            title: "🍬 II",
+            description: "🍬 boosts point gain again",
+            cost: new Decimal(1),
+            effect() {
+                return player[this.layer].points.add(1).pow(0.5)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+            cost: new Decimal(6)
+        },
+        13: {
+            title: "🍬 III",
+            description: "🍬 boosts pop gain",
+            cost: new Decimal(1),
+            effect() {
+                return player[this.layer].points.add(1).pow(0.5)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+            cost: new Decimal(7)
+        }
+    }
+}),
 addLayer("ba", {
     name: "basics", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "BA", // This appears on the layer's node. Default is the id with the first letter capitalized
@@ -507,10 +714,11 @@ addLayer("ba", {
         description: "w: reset your points of points for basics", // The description of the hotkey that is displayed in the game's How To Play tab
         onPress() { if (player.ba.unlocked) doReset("ba") },
         unlocked() {return hasUpgrade('pop', 23)}, // Determines if you can use the hotkey, optional
-        resetsNothing(){return hasUpgrade('c',11)}
+        
     }
 ],
     layerShown(){return hasUpgrade('pop', 23)},
+    resetsNothing(){return hasUpgrade('c',11)},
     branches: ['pop'],
             milestones: {
                 1: {
@@ -527,6 +735,11 @@ addLayer("ba", {
                     requirementDescription: "5 Basics",
                     effectDescription: "i think basic needs more upgrades",
                     done() { return player.ba.points.gte(5) },
+                },
+                4: {
+                    requirementDescription: "280 Basics",
+                    effectDescription: "pop layer needs a friend.",
+                    done() { return player.ba.points.gte(280) },
                 }
             },
             upgrades: {
@@ -630,7 +843,51 @@ upgrades: {
         description: "fj28f92j298fj289fj289fj982jf92 math newss wajkfljakl afld",
         cost: new Decimal(5)
     },
+    31: {
+        title: "Decimals",
+        description: "I'm becoming big brain",
+        cost: new Decimal(15)
+    },
+    32: {
+        title: "Fractions",
+        description: "big brain revolution",
+        cost: new Decimal(333)
+    },
 }
+}),
+addLayer("bb", {
+    name: "big brain", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "🧠", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+		points: new Decimal(0),
+    }},
+    color: "#CA86B0",
+    requires: new Decimal(1e6), // Can be a function that takes requirement increases into account
+    resource: "big brains", // Name of prestige currency
+    baseResource: "cash", // Name of resource prestige is based on
+    baseAmount() {return player.c.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.5, // Prestige currency exponent
+    gainMult() {
+        let mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 2, // Row the layer is in on the tree (0 is the first row)
+    hotkeys: [
+    {
+        key: "i", // What the hotkey button is. Use uppercase if it's combined with shift, or "ctrl+x" for holding down ctrl.
+        description: "i: reset your cash for big brains", // The description of the hotkey that is displayed in the game's How To Play tab
+        onPress() { if (player.bb.unlocked) doReset("bb") },
+        unlocked() {return hasUpgrade('ma', 32)} // Determines if you can use the hotkey, optional
+    }
+],
+layerShown(){return hasUpgrade('ma',32)},
+branches: ['c','ma'],
 }),
 addLayer("s", {
     name: "science", // This is optional, only used in a few places, If absent it just uses the layer id.
@@ -736,6 +993,16 @@ upgrades: {
         },
         effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
         cost: new Decimal(5)
+    },
+    13: {
+        title: "No wallet",
+        description: "money grows on tree in this mod I guess",
+        cost: new Decimal(1e4),
+    },
+    21: {
+        title: "Tree",
+        description: "pop layer is getting REALLY ANNOYING",
+        cost: new Decimal(5e4),
     }
 }
 }),
@@ -772,4 +1039,20 @@ addLayer("sh", {
 ],
 branches: ['ba', 'ma', 'c', 's'],
 layerShown(){return player.fw.points.gte(1.5e3)},
+buyables: {
+    11: {
+        cost(x) { return new Decimal(1).mul(x) },
+        display() { return "more point gain funnies" + "      x" +  + " point gain" + "   " + "You have" + " of this buyable" },
+        title: "The alphabet doesn't have to be in a specific order (coming soon) ",
+        canAfford() { return player[this.layer].points.gte(this.cost()) },
+        buy() {
+            player[this.layer].points = player[this.layer].points.sub(this.cost())
+            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+        unlocked(){return true},
+        effect(x){ return this.effect;}
+        
+    },
+    
+}
 })
