@@ -855,6 +855,97 @@ upgrades: {
     },
 }
 }),
+addLayer("h", {
+    name: "hub", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "H", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+		points: new Decimal(0),
+    }},
+    color: "#00ffe1",
+    requires: new Decimal(10), // Can be a function that takes requirement increases into account
+    resource: "stuff points", // Name of prestige currency
+    baseResource: "spop", // Name of resource prestige is based on
+    baseAmount() {return player.spop.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.1, // Prestige currency exponent
+    gainMult() {
+        let mult = new Decimal(1)
+
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: "side", // Row the layer is in on the tree (0 is the first row)
+    layerShown(){return hasUpgrade('c',22)},
+    layerShown(){return player.h.points.gte(1)},
+    tabFormat: {
+        "Main tab": {
+            content: [
+                "main-display",
+                "prestige-button"
+            ],
+        },
+        "Upgrades": {
+            content: [
+                "upgrades"
+            ],        
+        },
+        "Milestones": {
+            content: [
+                "milestones",
+                "achievements"
+            ],        
+        },
+        
+    },
+    achievements: {
+        11: {
+            name: "Clicking Mastery",
+            doneTooltip: "You must of clicked for an eternity",
+            done() {return player.h.points.gte(5e3)},
+            unlocked() {return player.h.points.gte(1)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.W-vmaCx1K4yfU9pwoUajywHaHa&pid=Api&rs=1&c=1&qlt=95&w=123&h=123",
+            style(){
+            return {
+                "object-fit": "cover",
+                "max-width": "100%",
+                "max-height": "100%"
+            }
+        }
+        },
+        12: {
+            name: "Big Brain Maximum",
+            doneTooltip: "Impossible!",
+            done() {return player.bb.points.gte(1e6)},
+            unlocked() {return player.h.points.gte(1)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.-rID81yR_rxm37JFLWDSKgHaGP&pid=Api&rs=1&c=1&qlt=95&w=146&h=122",
+            style(){
+            return {
+                "object-fit": "cover",
+                "max-width": "100%",
+                "max-height": "100%"
+            }
+        }
+        },
+        13: {
+            name: "Which name came first? The fruit orange, or the colour orange?",
+            doneTooltip: "Did the chicken come first or the egg?",
+            done() {return player.sh.points.gte(10)},
+            unlocked() {return player.h.points.gte(1)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.0ZmGUfhrE_fWCRN_H31eqQHaM6&pid=Api&rs=1&c=1&qlt=95&w=65&h=114",
+            style(){
+            return {
+                "object-fit": "cover",
+                "max-width": "100%",
+                "max-height": "100%"
+            }
+        }
+        },
+    }
+}),
 addLayer("bb", {
     name: "big brain", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "🧠", // This appears on the layer's node. Default is the id with the first letter capitalized
