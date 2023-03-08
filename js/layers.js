@@ -115,6 +115,42 @@ addLayer("ap", {
             done(){return player.points.gte(30)},
             image: "https://tse1.mm.bing.net/th?id=OIP.vgWkd-CPVqX7C3pnWZ5fEgHaHa&pid=Api&rs=1&c=1&qlt=95&w=104&h=104"
         },
+        31: {
+            name: "Shiny!",
+            doneTooltip: "You have 1 Gold!",
+            done(){return player.g.points.gte(1)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.3S-80PYoCXpgcLIgfyQwrwHaEt&pid=Api&rs=1&c=1&qlt=95&w=153&h=97"
+        },
+        32: {
+            name: "AP Madness",
+            doneTooltip: "1,000 AP?",
+            done(){return player.ap.points.gte(1e3)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.qa866g-LILg2wop5l3huUAHaHa&pid=Api&rs=1&c=1&qlt=95&w=121&h=121"
+        },
+        33: {
+            name: "AP Insanity",
+            doneTooltip: "5,000 AP IS JUST CRAZY",
+            done(){return player.ap.points.gte(5e3)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.-YvrwQJppmxjeQtpP5zOOwHaHI&pid=Api&rs=1&c=1&qlt=95&w=121&h=117"
+        },
+        34: {
+            name: "ERRROROROROROROOR ERRROR ERROR ERRROROROR",
+            doneTooltip: "A?DSF?ASDF?A?SD(B@BM@*GA,",
+            done(){return hasUpgrade('ap',15)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.amx3TUI3HOtgR8PpAjnFUgHaE8&pid=Api&rs=1&c=1&qlt=95&w=163&h=109"
+        },
+        35: {
+            name: "Rich",
+            doneTooltip: "5 Gold is alot",
+            done(){return player.g.points.gte(5)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.eO6s7VhGj-ILpmxUAVCPfwHaFj&pid=Api&rs=1&c=1&qlt=95&w=147&h=110"
+        },
+        36: {
+            name: "Richer",
+            doneTooltip: "6 Gold better than 5",
+            done(){return player.g.points.gte(6)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.chAArMSzJftz6_vCd7x1igHaFj&pid=Api&rs=1&c=1&qlt=95&w=141&h=105"
+        },
 
     },
     upgrades: {
@@ -148,7 +184,7 @@ addLayer("ap", {
         },
         41: {
             title: "Golden",
-            description: "Unlock golden layer (Coming soon!)",
+            description: "Unlock golden layer ",
             cost(){return new Decimal(25)},
             unlocked(){return hasUpgrade('ap',31)}
         },
@@ -226,7 +262,39 @@ addLayer("ap", {
             title: "Unknown",
             description: "Unknown",
             cost(){return new Decimal(0)},
-            unlocked(){return true}
+            unlocked(){return true},
+            cost(){
+                if(hasUpgrade("ap",15)){
+                if(hasUpgrade("ap",15))return new Decimal("1ee10")
+                else return new Decimal("1ee10")
+            }
+            if(hasUpgrade("ap",15)){
+                if(hasUpgrade("ap",15))return new Decimal("1ee10")
+            }
+                else return new Decimal(0)
+            }
+        },
+        15: {
+            title: "Error",
+            description: "Error",
+            cost(){return new Decimal(0)},
+            unlocked(){return true},
+            cost(){
+                if(hasUpgrade("ap",14)){
+                if(hasUpgrade("ap",14))return new Decimal("1ee10")
+                else return new Decimal("1ee10")
+            }
+            if(hasUpgrade("ap",14)){
+                if(hasUpgrade("ap",14))return new Decimal("1ee10")
+            }
+                else return new Decimal(0)
+            }
+        },
+        24: {
+            title: "The First Layer",
+            description: "What layer can it be?",
+            cost(){return new Decimal(300)},
+            unlocked(){return true},
         },
     },
     clickables: {
@@ -234,7 +302,91 @@ addLayer("ap", {
             display() {return "Reset upgrades"},
             onClick(){return  player.ap.upgrades = ["reset"]},
             canClick(){return true}
-        }
+        },
         
     }
+}),
+addLayer("g", {
+    name: "gold", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: " ★ ", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+		points: new Decimal(0),
+    }},
+    color: "#f1c232",
+    requires: new Decimal(50), // Can be a function that takes requirement increases into account
+    resource: "Gold", // Name of prestige currency
+    baseResource: "ap", // Name of resource prestige is based on
+    baseAmount() {return player.ap.points}, // Get the current amount of baseResource
+    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 1, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: "side", // Row the layer is in on the tree (0 is the first row)
+    layerShown(){return hasUpgrade('ap',41)},
+    image: "https://tse1.mm.bing.net/th?id=OIP.jcXcU5LROLnni9oA-BylUQHaHa&pid=Api&rs=1&c=1&qlt=95&w=97&h=97",
+    tabFormat: {
+        "Main tab": {
+            content: [
+                "main-display",
+                "prestige-button",
+                "blank",
+                "milestones"
+            ],
+        },
+    },
+    milestones: {
+        1: {
+            requirementDescription: "2 Gold",
+            effectDescription: "Double point gain.",
+            done() { return player.g.points.gte(2) }
+        },
+        2: {
+            requirementDescription: "5 Gold",
+            effectDescription: "Triple point gain.",
+            done() { return player.g.points.gte(5) }
+        }
+    }
+}),
+addLayer("up", {
+    name: "upgrade points", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+		points: new Decimal(0),
+    }},
+    color: "#b22c2c",
+    requires: new Decimal(2), // Can be a function that takes requirement increases into account
+    resource: "Upgrade points", // Name of prestige currency
+    baseResource: "gold", // Name of resource prestige is based on
+    baseAmount() {return player.g.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.5, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 0, // Row the layer is in on the tree (0 is the first row)
+    layerShown(){return hasUpgrade('ap',24)},
+    image: "https://tse1.mm.bing.net/th?id=OIP.8Vrfv-OX5mT6pAyWt3eTRAHaHa&pid=Api&rs=1&c=1&qlt=95&w=91&h=91",
+    tabFormat: {
+        "Main tab": {
+            content: [
+                "main-display",
+                "prestige-button",
+                "blank",
+                "upgrades"
+            ],
+        },
+    },
 })
