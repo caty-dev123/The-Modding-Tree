@@ -25,6 +25,8 @@ addLayer("ap", {
         {key: "a", description: "a: Reset for Achievement points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown(){return true},
+    resetsNothing(){return hasUpgrade('up',42)},
+    autoPrestige(){return hasUpgrade('up',42)},
     tabFormat: {
         "Main tab": {
             content: [
@@ -187,7 +189,42 @@ addLayer("ap", {
             done(){return player.ap.points.gte(2.5e4)},
             image: "https://tse1.mm.bing.net/th?id=OIP.q8DLMiZddCvX4DTgeXNamQHaGX&pid=Api&rs=1&c=1&qlt=95&w=142&h=122"
         },
-
+        51: {
+            name: "Age of automation",
+            doneTooltip: "No more clicking!",
+            done(){return hasUpgrade('up',42)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.Hb87NyxC204h7EkkQJo7EAHaGn&pid=Api&rs=1&c=1&qlt=95&w=112&h=100"
+        },
+        52: {
+            name: "AP OVERLOAD",
+            doneTooltip: "TOO MUCH",
+            done(){return player.ap.points.gte(5e4)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.uOttW75ph7vpTK4DaD-QtQHaE7&pid=Api&rs=1&c=1&qlt=95&w=171&h=114"
+        },
+        53: {
+            name: "POINT OVERLOAD",
+            doneTooltip: "TOO MUCH Points?",
+            done(){return player.points.gte(1e3)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.T2AXILc65JNbNEBlgLCknQHaHb&pid=Api&rs=1&c=1&qlt=95&w=110&h=110"
+        },
+        54: {
+            name: "Millionare",
+            doneTooltip: "I got a pile of cash now.",
+            done(){return player.g.points.gte(10)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.r-zZNF4x5QOKIb3iWbasJAHaE7&pid=Api&rs=1&c=1&qlt=95&w=152&h=101"
+        },
+        55: {
+            name: "Division",
+            doneTooltip: "Points beyond 100,000 will be divided by 2",
+            done(){return player.points.gte(1e5)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.A2SeAObMO2Z39XgmeCCPfQHaHC&pid=Api&rs=1&c=1&qlt=95&w=119&h=113"
+        },
+        56: {
+            name: "A real challenger",
+            doneTooltip: "Unlock UP Challenges",
+            done(){return hasUpgrade('up',52)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.PKDe_2z2rGnIHRbse_g_PgHaE8&pid=Api&rs=1&c=1&qlt=95&w=143&h=95"
+        },
     },
     upgrades: {
         11: {
@@ -329,8 +366,14 @@ addLayer("ap", {
         24: {
             title: "The First Layer",
             description: "What layer can it be?",
-            cost(){return new Decimal(300)},
+            cost(){return new Decimal(170)},
             unlocked(){return true},
+        },
+        34: {
+            title: "The Second Layer",
+            description: "Coming soon!",
+            cost(){return new Decimal(5e4)},
+            unlocked(){return hasUpgrade('ap',24)},
         },
     },
     clickables: {
@@ -392,6 +435,11 @@ addLayer("g", {
             requirementDescription: "7 Gold",
             effectDescription: "x2 to point gain",
             done() { return player.g.points.gte(7) }
+        },
+        4: {
+            requirementDescription: "10 Gold",
+            effectDescription: "x3 point gain (10 Gold. That's alot)",
+            done() { return player.g.points.gte(10) }
         }
     }
 }),
@@ -406,7 +454,7 @@ addLayer("up", {
     color: "#b22c2c",
     requires: new Decimal(30), // Can be a function that takes requirement increases into account
     resource: "Upgrade points", // Name of prestige currency
-    baseResource: "gold", // Name of resource prestige is based on
+    baseResource: "points", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.6, // Prestige currency exponent
@@ -426,8 +474,17 @@ addLayer("up", {
                 "main-display",
                 "prestige-button",
                 "blank",
-                "upgrades"
+                "upgrades",
+                "clickables"
             ],
+        },
+        "Challenges": {
+            content: [
+                "blank",
+                "challenges",
+                
+            ],
+            unlocked(){return hasUpgrade('up',52)}
         },
     },
     upgrades: {
@@ -447,6 +504,61 @@ addLayer("up", {
             description: "Divide by 1.2 of point gain",
             cost: new Decimal(0),
             unlocked(){return hasUpgrade('up',21)}
-        }
+        },
+        41: {
+            title: "UPGRADE IV1",
+            description: "Boost point gain based on UP",
+            cost: new Decimal(5),
+            unlocked(){return hasUpgrade('up',31)},
+            cost(){
+                if(hasUpgrade("up",42)){
+                if(hasUpgrade("up",42))return new Decimal("1ee10")
+                else return new Decimal("1ee10")
+            }
+                else return new Decimal(5)
+            },
+            effect() {
+                return player[this.layer].points.add(1).pow(0.3)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
+        42: {
+            title: "UPGRADE IV2",
+            description: "Automatically gain 100% of AP ",
+            cost: new Decimal(10),
+            unlocked(){return hasUpgrade('up',31)},
+            cost(){
+                if(hasUpgrade("up",41)){
+                if(hasUpgrade("up",41))return new Decimal("1ee10")
+                else return new Decimal("1ee10")
+            }
+                else return new Decimal(10)
+            },
+        },
+        51: {
+            title: "UPGRADE V1",
+            description: "Boost point gain based on Gold",
+            cost: new Decimal(15),
+            unlocked(){return hasUpgrade('up',41)},
+            effect() {
+                return player.g.points.add(1).pow(0.3)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
+        52: {
+            title: "UPGRADE V2",
+            description: "Unlock challenges",
+            cost: new Decimal(15),
+            unlocked(){return hasUpgrade('up',42)},
+        },
+    },
+    clickables: {
+        11: {
+            display() {return "Reset UP Upgrades (You do not get your UP BACK"},
+            onClick(){return  player.up.upgrades = ["reset"]},
+            canClick(){return true}
+        },
+        
     }
+
 })
