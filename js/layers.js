@@ -151,6 +151,42 @@ addLayer("ap", {
             done(){return player.g.points.gte(6)},
             image: "https://tse1.mm.bing.net/th?id=OIP.chAArMSzJftz6_vCd7x1igHaFj&pid=Api&rs=1&c=1&qlt=95&w=141&h=105"
         },
+        41: {
+            name: "Upgrades",
+            doneTooltip: "Have 1 upgrade point!",
+            done(){return player.up.points.gte(1)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.y3leHzoyLDPxI8Q6qNSGSgHaHh&pid=Api&rs=1&c=1&qlt=95&w=90&h=91"
+        },
+        42: {
+            name: "100 Points",
+            doneTooltip: "THAT'S ALOT",
+            done(){return player.points.gte(100)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.PHnhI-VMnn6GbKMP-NBc0AHaEW&pid=Api&rs=1&c=1&qlt=95&w=210&h=123"
+        },
+        43: {
+            name: "UPGRADES",
+            doneTooltip: "The second upgrade is always nice!",
+            done(){return hasUpgrade('up',21)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.y1BvUR85n2lv8FHthqh-jQHaHa&pid=Api&rs=1&c=1&qlt=95&w=107&h=107"
+        },
+        44: {
+            name: "The Barrier",
+            doneTooltip: "Have the (UPGRADE III THE BARRIER)",
+            done(){return hasUpgrade('up',31)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.lqSoyiAtJHILCJ7Ei7An9gHaHa&pid=Api&rs=1&c=1&qlt=95&w=105&h=105"
+        },
+        45: {
+            name: "Too many points",
+            doneTooltip: "500 Points is just insane",
+            done(){return player.points.gte(500)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.OPGmgbG3P37-seVHsGz4PAHaHa&pid=Api&rs=1&c=1&qlt=95&w=100&h=100"
+        },
+        46: {
+            name: "25,000 AP",
+            doneTooltip: "How did you do it?",
+            done(){return player.ap.points.gte(2.5e4)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.q8DLMiZddCvX4DTgeXNamQHaGX&pid=Api&rs=1&c=1&qlt=95&w=142&h=122"
+        },
 
     },
     upgrades: {
@@ -351,6 +387,11 @@ addLayer("g", {
             requirementDescription: "5 Gold",
             effectDescription: "Triple point gain.",
             done() { return player.g.points.gte(5) }
+        },
+        3: {
+            requirementDescription: "7 Gold",
+            effectDescription: "x2 to point gain",
+            done() { return player.g.points.gte(7) }
         }
     }
 }),
@@ -363,12 +404,12 @@ addLayer("up", {
 		points: new Decimal(0),
     }},
     color: "#b22c2c",
-    requires: new Decimal(2), // Can be a function that takes requirement increases into account
+    requires: new Decimal(30), // Can be a function that takes requirement increases into account
     resource: "Upgrade points", // Name of prestige currency
     baseResource: "gold", // Name of resource prestige is based on
-    baseAmount() {return player.g.points}, // Get the current amount of baseResource
+    baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 0.5, // Prestige currency exponent
+    exponent: 0.6, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         return mult
@@ -389,4 +430,23 @@ addLayer("up", {
             ],
         },
     },
+    upgrades: {
+        11: {
+            title: "UPGRADE I",
+            description: "x1.1 point gain",
+            cost: new Decimal(1)
+        },
+        21: {
+            title: "UPGRADE II",
+            description: "x1.2 point gain",
+            cost: new Decimal(3),
+            unlocked(){return hasUpgrade('up',11)}
+        },
+        31: {
+            title: "UPGRADE III (The Barrier)",
+            description: "Divide by 1.2 of point gain",
+            cost: new Decimal(0),
+            unlocked(){return hasUpgrade('up',21)}
+        }
+    }
 })
