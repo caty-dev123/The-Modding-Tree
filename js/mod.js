@@ -1,25 +1,25 @@
 let modInfo = {
-	name: "The ??? Tree",
-	id: "mymod",
-	author: "nobody",
+	name: "The achievement Tree",
+	id: "achievement",
+	author: "caty",
 	pointsName: "points",
 	modFiles: ["layers.js", "tree.js"],
 
 	discordName: "",
 	discordLink: "",
-	initialStartPoints: new Decimal (10), // Used for hard resets and new players
+	initialStartPoints: new Decimal (0.01), // Used for hard resets and new players
 	offlineLimit: 1,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
 	num: "0.0",
-	name: "Literally nothing",
+	name: "The Start",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>v0.0</h3><br>
-		- Added things.<br>
+		- Started making AP.<br>
 		- Added stuff.`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
@@ -42,7 +42,20 @@ function getPointGen() {
 	if(!canGenPoints())
 		return new Decimal(0)
 
-	let gain = new Decimal(1)
+	let gain = new Decimal(0.01)
+	if (hasAchievement('ap', 12)) gain = gain.times(2)
+	if (hasUpgrade('ap', 21)) gain = gain.div(2)
+	if (hasUpgrade('ap', 22)) gain = gain.div(4)
+	if (hasUpgrade('ap', 23)) gain = gain.div(1.5)
+	if (hasUpgrade('ap', 31)) gain = gain.times(1.5)
+	if (hasUpgrade('ap', 32)) gain = gain.times(upgradeEffect('ap', 32))
+	if (hasUpgrade('ap', 33)) gain = gain.times(2)
+	if (hasAchievement('ap', 23)) gain = gain.times(2)
+	if (hasAchievement('ap', 16)) gain = gain.times(1.2)
+	if (hasAchievement('ap', 24)) gain = gain.times(1.01)
+	if (hasUpgrade('ap', 42)) gain = gain.times(3)
+	if (hasUpgrade('ap', 43)) gain = gain.times(2.6)
+	
 	return gain
 }
 
