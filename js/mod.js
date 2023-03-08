@@ -23,7 +23,7 @@ let changelog = `<h1>Changelog:</h1><br>
 - added more stuff to gold and AP <br>
 - new achievements
 
-<h3>v0.2</h3><br>
+<h3>v0.3</h3><br>
 		- added stuff to UP<br>
 		- added more stuff to gold and AP <br>
 		- Lots of new achievements
