@@ -25,8 +25,9 @@ addLayer("ap", {
         {key: "a", description: "a: Reset for Achievement points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown(){return true},
-    resetsNothing(){return hasUpgrade('up',42)},
-    autoPrestige(){return hasUpgrade('up',42)},
+    resetsNothing(){return hasUpgrade('up',42) || hasUpgrade('up',91)},
+    autoPrestige(){return hasUpgrade('up',42) || hasUpgrade('up',91)},
+
     tabFormat: {
         "Main tab": {
             content: [
@@ -208,7 +209,7 @@ addLayer("ap", {
             image: "https://tse1.mm.bing.net/th?id=OIP.T2AXILc65JNbNEBlgLCknQHaHb&pid=Api&rs=1&c=1&qlt=95&w=110&h=110"
         },
         54: {
-            name: "Millionare",
+            name: "millionaire",
             doneTooltip: "I got a pile of cash now.",
             done(){return player.g.points.gte(10)},
             image: "https://tse1.mm.bing.net/th?id=OIP.r-zZNF4x5QOKIb3iWbasJAHaE7&pid=Api&rs=1&c=1&qlt=95&w=152&h=101"
@@ -224,6 +225,42 @@ addLayer("ap", {
             doneTooltip: "Unlock UP Challenges",
             done(){return hasUpgrade('up',52)},
             image: "https://tse1.mm.bing.net/th?id=OIP.PKDe_2z2rGnIHRbse_g_PgHaE8&pid=Api&rs=1&c=1&qlt=95&w=143&h=95"
+        },
+        61: {
+            name: "Tick tock... PAINFUL!",
+            doneTooltip: "You did it? (That took some time)",
+            done(){return hasChallenge('up',11)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.aOzdU2JRPkD1bNVHHV9WsQHaF0&pid=Api&rs=1&c=1&qlt=95&w=146&h=115"
+        },
+        62: {
+            name: "Upgrade Point Mania",
+            doneTooltip: "have 100 UP",
+            done(){return player.up.points.gte(100)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.CeAgeJdqT3omlYNEBD4z1wHaE7&pid=Api&rs=1&c=1&qlt=95&w=160&h=106"
+        },
+        63: {
+            name: "Pick a path",
+            doneTooltip: "Which way should I go?",
+            done(){return hasUpgrade('up',81)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.lTkF0yGhEbIzMVRK0msfVwHaHa&pid=Api&rs=1&c=1&qlt=95&w=121&h=121"
+        },
+        64: {
+            name: "billionaire",
+            doneTooltip: "So much money!",
+            done(){return player.g.points.gte(12)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.ljZyGdzJP3ylcW9byU_u3gHaHV&pid=Api&rs=1&c=1&qlt=95&w=117&h=115"
+        },
+        65: {
+            name: "Dusty",
+            doneTooltip: "How long has it been?",
+            done(){return hasChallenge('up',12)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.JR2KKNOVZFqC7CZ_VNVDGAHaEh&pid=Api&rs=1&c=1&qlt=95&w=203&h=124"
+        },
+        66: {
+            name: "That's so many points!",
+            doneTooltip: "You waited that long to get this? Ok.",
+            done(){return player.points.gte(1e6)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.De_9sZGprDSZafrpzzc7dwHaEK&pid=Api&rs=1&c=1&qlt=95&w=175&h=98"
         },
     },
     upgrades: {
@@ -372,7 +409,7 @@ addLayer("ap", {
         34: {
             title: "The Second Layer",
             description: "Coming soon!",
-            cost(){return new Decimal(5e4)},
+            cost(){return new Decimal("1eee100")},
             unlocked(){return hasUpgrade('ap',24)},
         },
     },
@@ -440,6 +477,11 @@ addLayer("g", {
             requirementDescription: "10 Gold",
             effectDescription: "x3 point gain (10 Gold. That's alot)",
             done() { return player.g.points.gte(10) }
+        },
+        5: {
+            requirementDescription: "15 Gold",
+            effectDescription: "x2 point gain (15 Gold. How did you even get that much?)",
+            done() { return player.g.points.gte(15) }
         }
     }
 }),
@@ -460,6 +502,9 @@ addLayer("up", {
     exponent: 0.6, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+        if (hasChallenge('up', 11)) mult = mult.times(2)
+        if (hasUpgrade('up', 71)) mult = mult.times(1.5)
+        if (hasUpgrade('up', 93)) mult = mult.times(2)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -551,12 +596,117 @@ addLayer("up", {
             cost: new Decimal(15),
             unlocked(){return hasUpgrade('up',42)},
         },
+        61: {
+            title: "UPGRADE VI",
+            description: "/1.3 point gain",
+            cost: new Decimal(5),
+            unlocked(){return hasUpgrade('up',51) || hasUpgrade('up',52)},
+          
+        },
+        71: {
+            title: "UPGRADE VII1",
+            description: "x1.5 UP gain",
+            cost: new Decimal(20),
+            unlocked(){return hasUpgrade('up',61)},
+            cost(){
+                if(hasUpgrade("up",72)){
+                if(hasUpgrade("up",72))return new Decimal("1ee10")
+                else return new Decimal("1ee10")
+            }
+                else return new Decimal(20)
+            },
+        },
+        72: {
+            title: "UPGRADE VII2",
+            description: "x3 point gain",
+            cost: new Decimal(20),
+            unlocked(){return hasUpgrade('up',61)},
+            cost(){
+                if(hasUpgrade("up",71)){
+                if(hasUpgrade("up",71))return new Decimal("1ee10")
+                else return new Decimal("1ee10")
+            }
+                else return new Decimal(20)
+            },
+        },
+        81: {
+            title: "UPGRADE VII",
+            description: "/2 point gain",
+            cost: new Decimal(10),
+            unlocked(){return hasUpgrade('up',71) || hasUpgrade('up',72)},
+          
+        },
+        91: {
+            title: "UPGRADE VIII1",
+            description: "Gain 100% of AP",
+            cost: new Decimal(30),
+            unlocked(){return hasUpgrade('up',81)},
+            cost(){
+                if(hasUpgrade("up",92)){
+                if(hasUpgrade("up",93))return new Decimal("1ee10")
+                else return new Decimal("1ee10")
+            }
+            if(hasUpgrade("up",93)){
+                if(hasUpgrade("up",93))return new Decimal("1ee10")
+            }
+                else return new Decimal(30)
+            }
+        },
+        92: {
+            title: "UPGRADE VIII2",
+            description: "x4 point gain",
+            cost: new Decimal(30),
+            unlocked(){return hasUpgrade('up',81)},
+            cost(){
+                if(hasUpgrade("up",91)){
+                if(hasUpgrade("up",93))return new Decimal("1ee10")
+                else return new Decimal("1ee10")
+            }
+            if(hasUpgrade("up",93)){
+                if(hasUpgrade("up",93))return new Decimal("1ee10")
+            }
+                else return new Decimal(30)
+            }
+        },
+        93: {
+            title: "UPGRADE VIII3",
+            description: "x2 UP gain",
+            cost: new Decimal(30),
+            unlocked(){return hasUpgrade('up',81)},
+            cost(){
+                if(hasUpgrade("up",92)){
+                if(hasUpgrade("up",91))return new Decimal("1ee10")
+                else return new Decimal("1ee10")
+            }
+            if(hasUpgrade("up",91)){
+                if(hasUpgrade("up",91))return new Decimal("1ee10")
+            }
+                else return new Decimal(30)
+            }
+        },
     },
     clickables: {
         11: {
             display() {return "Reset UP Upgrades (You do not get your UP BACK"},
             onClick(){return  player.up.upgrades = ["reset"]},
             canClick(){return true}
+        },
+        
+    },
+    challenges: {
+        11: {
+            name: "Painful Wait",
+            challengeDescription: "If you wait you will get a reward! (x2 UP GAIN) GET 1 Point",
+            goalDescription: "1 Point",
+            canComplete: function() {return player.points.gte(1)},
+            
+        },
+        12: {
+            name: "How long has it been?",
+            challengeDescription: "Waiting waiting... AAAAHHHH (x5 point gain)",
+            goalDescription: "1 Point",
+            canComplete: function() {return player.points.gte(1)},
+            
         },
         
     }

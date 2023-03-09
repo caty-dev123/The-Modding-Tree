@@ -13,15 +13,17 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.3",
-	name: "So many stuff",
+	num: "0.4",
+	name: "Challenger",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-<h3>v0.2</h3><br>
+<h3>v0.4</h3><br>
 - added more stuff to UP<br>
-- added more stuff to gold and AP <br>
-- new achievements
+- new row of achievements <br>
+- New milestone in the gold layer <br>
+- Some fixes
+
 
 <h3>v0.3</h3><br>
 		- added stuff to UP<br>
@@ -80,6 +82,14 @@ function getPointGen() {
 	if (hasMilestone('g', 4)) gain = gain.times(3)
 	if (player.points.gte(1e5)) gain = gain.div(2)
 	if (hasUpgrade('up', 51)) gain = gain.times(upgradeEffect('up', 51))
+	if (inChallenge('up', 11)) gain = gain.div(1e3)
+	if (hasUpgrade('up', 61)) gain = gain.div(1.3)
+	if (hasUpgrade('up', 72)) gain = gain.times(3)
+	if (hasUpgrade('up', 81)) gain = gain.div(2)
+	if (hasUpgrade('up', 92)) gain = gain.times(4)
+	if (inChallenge('up', 12)) gain = gain.div(1e4)
+	if (hasChallenge('up', 12)) gain = gain.times(5)
+	if (hasMilestone('g', 5)) gain = gain.times(2)
 	
 	return gain
 }
