@@ -262,6 +262,42 @@ addLayer("ap", {
             done(){return player.points.gte(1e6)},
             image: "https://tse1.mm.bing.net/th?id=OIP.De_9sZGprDSZafrpzzc7dwHaEK&pid=Api&rs=1&c=1&qlt=95&w=175&h=98"
         },
+        71: {
+            name: "Trillionaire",
+            doneTooltip: "Money money money money money money.",
+            done(){return player.g.points.gte(16)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.5J-NkcmlArdqPAPp6LFANwHaGD&pid=Api&rs=1&c=1&qlt=95&w=152&h=124"
+        },
+        72: {
+            name: "Upgrade Madness",
+            doneTooltip: "10,000 UP That's alot",
+            done(){return player.up.points.gte(1e4)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.acnSPtnFdFvK307a1MVpTgHaJv&pid=Api&rs=1&c=1&qlt=95&w=79&h=103"
+        },
+         73: {
+            name: "Vast cosmos of points",
+            doneTooltip: "10 million... huh that's so many points.",
+            done(){return player.points.gte(1e7)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.pprrYJ89t9AzW8os9CmeYAHaHW&pid=Api&rs=1&c=1&qlt=95&w=110&h=109"
+        },
+        74: {
+            name: "Out of time",
+            doneTooltip: "No more time.....",
+            done(){return hasChallenge('up',21)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.Vajw1H1Yg4qxDurYLBAShAHaG4&pid=Api&rs=1&c=1&qlt=95&w=117&h=108"
+        },
+        75: {
+            name: "Double Division",
+            doneTooltip: "Past 1e6 points your point gain is divided by 2 again.",
+            done(){return player.points.gte(1e6)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.XXPCS0rtV5uiXUix50IzZQHaHa&pid=Api&rs=1&c=1&qlt=95&w=111&h=111"
+        },
+        76: {
+            name: "Quadrillionaire",
+            doneTooltip: "20 GOLD??!?!?!? ",
+            done(){return player.g.points.gte(20)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.NXbAdWro7dk8KCWfQSci8wHaEh&pid=Api&rs=1&c=1&qlt=95&w=186&h=113"
+        },
     },
     upgrades: {
         11: {
@@ -406,6 +442,12 @@ addLayer("ap", {
             cost(){return new Decimal(170)},
             unlocked(){return true},
         },
+        55: {
+            title: "A mysterious portal",
+            description: "Huh?",
+            cost(){return new Decimal(40)},
+            unlocked(){return true},
+        },
         34: {
             title: "The Second Layer",
             description: "Coming soon!",
@@ -439,6 +481,7 @@ addLayer("g", {
     exponent: 1, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+        if (hasChallenge('up', 21)) mult = mult.div(2)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -455,6 +498,22 @@ addLayer("g", {
                 "blank",
                 "milestones"
             ],
+        },
+        "???": {
+            content: [
+                "main-display",
+                "blank",
+                "achievements"
+            ],
+            unlocked(){return hasUpgrade('ap',55)}
+        },
+    },
+    achievements: {
+        76: {
+            name: "Maze",
+            doneTooltip: "???",
+            done(){return hasUpgrade('up',53)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.jocjDkinZkFimqsdT9dyLgHaHa&pid=Api&rs=1&c=1&qlt=95&w=121&h=121"
         },
     },
     milestones: {
@@ -482,6 +541,16 @@ addLayer("g", {
             requirementDescription: "15 Gold",
             effectDescription: "x2 point gain (15 Gold. How did you even get that much?)",
             done() { return player.g.points.gte(15) }
+        },
+        6: {
+            requirementDescription: "18 Gold",
+            effectDescription: "x2 point gain",
+            done() { return player.g.points.gte(18) }
+        },
+        7: {
+            requirementDescription: "21 Gold",
+            effectDescription: "x2 point gain",
+            done() { return player.g.points.gte(21) },
         }
     }
 }),
@@ -505,6 +574,7 @@ addLayer("up", {
         if (hasChallenge('up', 11)) mult = mult.times(2)
         if (hasUpgrade('up', 71)) mult = mult.times(1.5)
         if (hasUpgrade('up', 93)) mult = mult.times(2)
+        if (hasUpgrade('up', 101)) mult = mult.times(1.5)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -537,6 +607,96 @@ addLayer("up", {
             title: "UPGRADE I",
             description: "x1.1 point gain",
             cost: new Decimal(1)
+        },
+        22: {
+            title: "MAZE",
+            description: "???",
+            cost: new Decimal(0),
+            unlocked(){return hasUpgrade('ap',55)}
+        },
+        32: {
+            title: "MAZE PATH 1",
+            description: "???",
+            cost: new Decimal(0),
+            unlocked(){return hasUpgrade('up',22)},
+            cost(){
+                if(hasUpgrade("up",33)){
+                if(hasUpgrade("up",33))return new Decimal("1ee10")
+                else return new Decimal("1ee10")
+            }
+                else return new Decimal(0)
+            },
+        },
+        33: {
+            title: "MAZE PATH 2",
+            description: "???",
+            cost: new Decimal(0),
+            unlocked(){return hasUpgrade('up',22)},
+            cost(){
+                if(hasUpgrade("up",32)){
+                if(hasUpgrade("up",32))return new Decimal("1ee10")
+                else return new Decimal("1ee10")
+            }
+                else return new Decimal(0)
+            },
+        },
+        45: {
+            title: "MAZE PATH:2 1",
+            description: "???",
+            cost: new Decimal(0),
+            unlocked(){return hasUpgrade('up',33)},
+            cost(){
+                if(hasUpgrade("up",46)){
+                if(hasUpgrade("up",46))return new Decimal("1ee10")
+                else return new Decimal("1ee10")
+            }
+                else return new Decimal(0)
+            },
+        },
+        46: {
+            title: "MAZE PATH:2 2",
+            description: "???",
+            cost: new Decimal(0),
+            unlocked(){return hasUpgrade('up',33)},
+            cost(){
+                if(hasUpgrade("up",45)){
+                if(hasUpgrade("up",45))return new Decimal("1ee10")
+                else return new Decimal("1ee10")
+            }
+                else return new Decimal(0)
+            },
+        },
+        53: {
+            title: "MAZE PATH:2:2 SAFE",
+            description: "x1.0001 point gain",
+            cost: new Decimal(0),
+            unlocked(){return hasUpgrade('up',46)},
+        },
+        43: {
+            title: "MAZE PATH:1 1",
+            description: "???",
+            cost: new Decimal(0),
+            unlocked(){return hasUpgrade('up',32)},
+            cost(){
+                if(hasUpgrade("up",44)){
+                if(hasUpgrade("up",44))return new Decimal("1ee10")
+                else return new Decimal("1ee10")
+            }
+                else return new Decimal(0)
+            },
+        },
+        44: {
+            title: "MAZE PATH:1 2",
+            description: "???",
+            cost: new Decimal(0),
+            unlocked(){return hasUpgrade('up',32)},
+            cost(){
+                if(hasUpgrade("up",43)){
+                if(hasUpgrade("up",43))return new Decimal("1ee10")
+                else return new Decimal("1ee10")
+            }
+                else return new Decimal(0)
+            },
         },
         21: {
             title: "UPGRADE II",
@@ -684,6 +844,64 @@ addLayer("up", {
                 else return new Decimal(30)
             }
         },
+        101: {
+            title: "UPGRADE IX1",
+            description: "x1.5 UP gain",
+            cost: new Decimal(40),
+            unlocked(){return hasUpgrade('up',91) || hasUpgrade('up',92) || hasUpgrade('up',93)},
+            cost(){
+                if(hasUpgrade("up",102)){
+                if(hasUpgrade("up",103))return new Decimal("1ee10")
+                else return new Decimal("1ee10")
+            }
+            if(hasUpgrade("up",101)){
+                if(hasUpgrade("up",101))return new Decimal("1ee10")
+            }
+            if(hasUpgrade("up",103)){
+                if(hasUpgrade("up",103))return new Decimal("1ee10")
+            }
+                else return new Decimal(40)
+            }
+        },
+        102: {
+            title: "UPGRADE IX2",
+            description: "x3 point gain",
+            cost: new Decimal(40),
+            unlocked(){return hasUpgrade('up',91) || hasUpgrade('up',92) || hasUpgrade('up',93)},
+            cost(){
+                if(hasUpgrade("up",101)){
+                if(hasUpgrade("up",103))return new Decimal("1ee10")
+                else return new Decimal("1ee10")
+            }
+            if(hasUpgrade("up",101)){
+                if(hasUpgrade("up",101))return new Decimal("1ee10")
+            }
+            if(hasUpgrade("up",103)){
+                if(hasUpgrade("up",103))return new Decimal("1ee10")
+            }
+                else return new Decimal(40)
+            }
+        },
+        103: {
+            title: "UPGRADE IX3",
+            description: "UP boosts point gain slightly",
+            cost: new Decimal(40),
+            unlocked(){return hasUpgrade('up',91) || hasUpgrade('up',92) || hasUpgrade('up',93)},
+            cost(){
+                if(hasUpgrade("up",102)){
+                if(hasUpgrade("up",101))return new Decimal("1ee10")
+                else return new Decimal("1ee10")
+            }
+            if(hasUpgrade("up",101)){
+                if(hasUpgrade("up",101))return new Decimal("1ee10")
+            }
+                else return new Decimal(40)
+            },
+            effect() {
+                return player.up.points.add(1).pow(0.1)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
     },
     clickables: {
         11: {
@@ -704,6 +922,13 @@ addLayer("up", {
         12: {
             name: "How long has it been?",
             challengeDescription: "Waiting waiting... AAAAHHHH (x5 point gain)",
+            goalDescription: "1 Point",
+            canComplete: function() {return player.points.gte(1)},
+            
+        },
+        21: {
+            name: "It's been years",
+            challengeDescription: "How long does this take... THIS IS MADNESS! (/2 gold requirement)",
             goalDescription: "1 Point",
             canComplete: function() {return player.points.gte(1)},
             
