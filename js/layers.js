@@ -15,6 +15,7 @@ addLayer("ap", {
     exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+        if (hasUpgrade('up', 112)) mult = mult.times(1.5)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -25,8 +26,8 @@ addLayer("ap", {
         {key: "a", description: "a: Reset for Achievement points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown(){return true},
-    resetsNothing(){return hasUpgrade('up',42) || hasUpgrade('up',91)},
-    autoPrestige(){return hasUpgrade('up',42) || hasUpgrade('up',91)},
+    resetsNothing(){return hasUpgrade('up',42) || hasUpgrade('up',91) || hasMilestone('g',8)},
+    autoPrestige(){return hasUpgrade('up',42) || hasUpgrade('up',91) || hasMilestone('g',8)},
 
     tabFormat: {
         "Main tab": {
@@ -298,6 +299,24 @@ addLayer("ap", {
             done(){return player.g.points.gte(20)},
             image: "https://tse1.mm.bing.net/th?id=OIP.NXbAdWro7dk8KCWfQSci8wHaEh&pid=Api&rs=1&c=1&qlt=95&w=186&h=113"
         },
+        81: {
+            name: "Universal Points",
+            doneTooltip: "100 Million points... Huh.",
+            done(){return player.points.gte(1e8)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.Sjd-BkwT2ueze6uiU_bTMwHaEx&pid=Api&rs=1&c=1&qlt=95&w=166&h=107"
+        },
+        82: {
+            name: "All the riches",
+            doneTooltip: "Have 22 gold.",
+            done(){return player.g.points.gte(22)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.C4jLLRukYxhJLjJfll0vWAHaFj&pid=Api&rs=1&c=1&qlt=95&w=148&h=111"
+        },
+        83: {
+            name: "Layers on top layers",
+            doneTooltip: "Unlock Booster layer",
+            done(){return hasMilestone('g',8)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.VgCmflFlRgoMPPSouLoB8QHaHa&pid=Api&rs=1&c=1&qlt=95&w=107&h=107"
+        },
     },
     upgrades: {
         11: {
@@ -448,6 +467,12 @@ addLayer("ap", {
             cost(){return new Decimal(40)},
             unlocked(){return true},
         },
+        65: {
+            title: "???",
+            description: "???",
+            cost(){return new Decimal(1e4)},
+            unlocked(){return hasUpgrade('ap',55)},
+        },
         34: {
             title: "The Second Layer",
             description: "Coming soon!",
@@ -482,6 +507,7 @@ addLayer("g", {
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         if (hasChallenge('up', 21)) mult = mult.div(2)
+        if (hasUpgrade('up', 113)) mult = mult.div(1.5)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -509,11 +535,17 @@ addLayer("g", {
         },
     },
     achievements: {
-        76: {
+        11: {
             name: "Maze",
             doneTooltip: "???",
             done(){return hasUpgrade('up',53)},
             image: "https://tse1.mm.bing.net/th?id=OIP.jocjDkinZkFimqsdT9dyLgHaHa&pid=Api&rs=1&c=1&qlt=95&w=121&h=121"
+        },
+        12: {
+            name: "Question",
+            doneTooltip: "???",
+            done(){return hasUpgrade('ap',65)},
+            image: "https://tse1.mm.bing.net/th?id=OIP.kkEY_WSiLwTUMTpYH2IaTwHaHa&pid=Api&rs=1&c=1&qlt=95&w=113&h=113"
         },
     },
     milestones: {
@@ -551,6 +583,11 @@ addLayer("g", {
             requirementDescription: "21 Gold",
             effectDescription: "x2 point gain",
             done() { return player.g.points.gte(21) },
+        },
+        8: {
+            requirementDescription: "22 Gold",
+            effectDescription: "Unlock booster layer and permanent AP gain",
+            done() { return player.g.points.gte(22) },
         }
     }
 }),
@@ -693,6 +730,32 @@ addLayer("up", {
             cost(){
                 if(hasUpgrade("up",43)){
                 if(hasUpgrade("up",43))return new Decimal("1ee10")
+                else return new Decimal("1ee10")
+            }
+                else return new Decimal(0)
+            },
+        },
+        54: {
+            title: "MAZE PATH:1:2 1",
+            description: "???",
+            cost: new Decimal(0),
+            unlocked(){return hasUpgrade('up',44)},
+            cost(){
+                if(hasUpgrade("up",55)){
+                if(hasUpgrade("up",55))return new Decimal("1ee10")
+                else return new Decimal("1ee10")
+            }
+                else return new Decimal(0)
+            },
+        },
+        55: {
+            title: "MAZE PATH:1:2 2",
+            description: "???",
+            cost: new Decimal(0),
+            unlocked(){return hasUpgrade('up',44)},
+            cost(){
+                if(hasUpgrade("up",54)){
+                if(hasUpgrade("up",54))return new Decimal("1ee10")
                 else return new Decimal("1ee10")
             }
                 else return new Decimal(0)
@@ -902,6 +965,60 @@ addLayer("up", {
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
         },
+        111: {
+            title: "UPGRADE X1",
+            description: "x3 point gain",
+            cost: new Decimal(500),
+            unlocked(){return hasUpgrade('up',101) || hasUpgrade('up',102) || hasUpgrade('up',103)},
+            cost(){
+                if(hasUpgrade("up",112)){
+                if(hasUpgrade("up",113))return new Decimal("1ee10")
+                else return new Decimal("1ee10")
+            }
+            if(hasUpgrade("up",111)){
+                if(hasUpgrade("up",111))return new Decimal("1ee10")
+            }
+            if(hasUpgrade("up",113)){
+                if(hasUpgrade("up",113))return new Decimal("1ee10")
+            }
+                else return new Decimal(500)
+            }
+        },
+        112: {
+            title: "UPGRADE X2",
+            description: "x1.5 AP gain",
+            cost: new Decimal(500),
+            unlocked(){return hasUpgrade('up',101) || hasUpgrade('up',102) || hasUpgrade('up',103)},
+            cost(){
+                if(hasUpgrade("up",111)){
+                if(hasUpgrade("up",113))return new Decimal("1ee10")
+                else return new Decimal("1ee10")
+            }
+            if(hasUpgrade("up",111)){
+                if(hasUpgrade("up",111))return new Decimal("1ee10")
+            }
+            if(hasUpgrade("up",113)){
+                if(hasUpgrade("up",113))return new Decimal("1ee10")
+            }
+                else return new Decimal(500)
+            }
+        },
+        113: {
+            title: "UPGRADE X3",
+            description: "/1.5 gold requirement",
+            cost: new Decimal(500),
+            unlocked(){return hasUpgrade('up',101) || hasUpgrade('up',102) || hasUpgrade('up',103)},
+            cost(){
+                if(hasUpgrade("up",112)){
+                if(hasUpgrade("up",111))return new Decimal("1ee10")
+                else return new Decimal("1ee10")
+            }
+            if(hasUpgrade("up",111)){
+                if(hasUpgrade("up",111))return new Decimal("1ee10")
+            }
+                else return new Decimal(500)
+            },
+        },
     },
     clickables: {
         11: {
@@ -936,4 +1053,42 @@ addLayer("up", {
         
     }
 
+}),
+addLayer("bo", {
+    name: "boosters", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+		points: new Decimal(0),
+    }},
+    color: "#b22c2c",
+    requires: new Decimal(1e5), // Can be a function that takes requirement increases into account
+    resource: "Boosters", // Name of prestige currency
+    baseResource: "Upgrade Points", // Name of resource prestige is based on
+    baseAmount() {return player.up.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.8, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 1, // Row the layer is in on the tree (0 is the first row)
+    layerShown(){return hasMilestone('g',8)},
+    image: "https://tse1.mm.bing.net/th?id=OIP.8Vrfv-OX5mT6pAyWt3eTRAHaHa&pid=Api&rs=1&c=1&qlt=95&w=91&h=91",
+    branches: ['up'],
+    tabFormat: {
+        "Main tab": {
+            content: [
+                "main-display",
+                "prestige-button",
+                "blank",
+                "upgrades",
+                
+            ],
+        },
+    },
 })
